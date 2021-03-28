@@ -6,6 +6,12 @@
 
 ### Use Cases
 
+The user can:
+
+  * Login: When opening our website, the user will be able to 
+  * Create a lobby
+  * 
+
 ### User interface and User interaction
 
 ### Block diagram
@@ -14,11 +20,11 @@ link para editar: [miro](https://miro.com/welcomeonboard/HLPSUFIjvCDol7kjUmAXiGE
 
 ### Mock-up
 
-*link maybe*
+link para editar: [framer](https://framer.com/projects/Sequencer-App--xDJsuuMErWVXJM9c9W7d-cI87y?node=fz05UI8fr-page)
 
 ### How to install and use
 
 ### Technologies
 
-* [Reactjs](https://reactjs.org/)
-* [Tonejs](https://tonejs.github.io/)
+* [React](https://reactjs.org/): 
+* [Tonejs](https://tonejs.github.io/): Web Audio framework for creating interactive music in the browser
