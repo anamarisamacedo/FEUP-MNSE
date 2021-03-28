@@ -8,8 +8,9 @@
 
 The user can:
 
-  * Login: When opening our website, the user will be able to 
+  * Login: When opening our website, the user will be able to choose a username/nickname;
   * Create a lobby
+  * Join a lobby
   * 
 
 ### User interface and User interaction
@@ -26,5 +27,5 @@ link para editar: [framer](https://framer.com/projects/Sequencer-App--xDJsuuMErW
 
 ### Technologies
 
-* [React](https://reactjs.org/): 
+* [React](https://reactjs.org/): JavaScript library for building user interfaces
 * [Tonejs](https://tonejs.github.io/): Web Audio framework for creating interactive music in the browser
