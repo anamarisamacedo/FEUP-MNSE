@@ -10,6 +10,8 @@
 
 ### Block diagram
 
+link para editar: [miro](https://miro.com/welcomeonboard/HLPSUFIjvCDol7kjUmAXiGEZJMSPVxuoaoUiQS3YoGbMLmTNmZaKHI4uKwBt4jZI)
+
 ### Mock-up
 
 *link maybe*
