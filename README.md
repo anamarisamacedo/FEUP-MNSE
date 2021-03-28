@@ -1,12 +1,12 @@
 # FEUP-MNSE
 
-### Description
+### Overview
 
 *identify the problem to solve and describe our idea and the target audience. Identify the types of multimedia we are going to use.*
 
-### Requirements
+### Use Cases
 
-### Sketch
+### User interface and User interaction
 
 ### Block diagram
 
