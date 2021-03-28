@@ -1,0 +1,14 @@
+{
+    "login": {
+        "description": "Login",
+        "link": "/login" 
+    },
+    "home": {
+        "description": "Home",
+        "link": "/"
+    },
+    "session": {
+        "description": "Session",
+        "link": "/session"
+    }
+}
