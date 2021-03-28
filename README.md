@@ -2,7 +2,7 @@
 
 ### Description
 
-*identify the problem to solve and describe our idea, the target audience. Identify the types of multimedia we are going to use.*
+*identify the problem to solve and describe our idea and the target audience. Identify the types of multimedia we are going to use.*
 
 ### Requirements
 
