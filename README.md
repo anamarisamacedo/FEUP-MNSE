@@ -14,6 +14,8 @@
 
 *link maybe*
 
+### How to install and use
+
 ### Technologies
 
 * [React](https://reactjs.org/)
