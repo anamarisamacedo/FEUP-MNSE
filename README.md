@@ -2,7 +2,7 @@
 
 ### Description
 
-**identify the problem to solve and describe our idea. Identify the types of multimedia we are going to use.** 
+*identify the problem to solve and describe our idea. Identify the types of multimedia we are going to use.*
 
 ### Requirements
 
@@ -12,7 +12,7 @@
 
 ### Mock-up
 
-**link**
+*link maybe*
 
 ### Technologies
 
