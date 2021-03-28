@@ -9,8 +9,8 @@
 The user can:
 
   * Login: When opening our website, the user will be able to choose a username/nickname;
-  * Create a lobby
-  * Join a lobby
+  * Create a lobby: 
+  * Join a lobby:
   * 
 
 ### User interface and User interaction
