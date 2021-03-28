@@ -18,4 +18,5 @@
 
 ### Technologies
 
-* [React](https://reactjs.org/)
+* [Reactjs](https://reactjs.org/)
+* [Tonejs](https://tonejs.github.io/)
