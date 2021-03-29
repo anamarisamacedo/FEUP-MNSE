@@ -27,8 +27,6 @@ The application uses different types of media, such as:
   * Change lobby settings: the Lobby leader can change the settings of a lobby that hasn't started yet
   * Start jam: the Lobby Leader can start the jam anytime they want 
 
-### User interface and User interaction
-
 ### Block diagram
 
 ![Block diagram (1)](https://user-images.githubusercontent.com/61831138/112857016-53d05600-90a8-11eb-91ad-a6a364393e04.jpg)
