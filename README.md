@@ -31,6 +31,8 @@ The application uses different types of media, such as:
 
 ### Block diagram
 
+![Block Diagram](https://github.com/anamarisamacedo/FEUP-MNSE/blob/main/Block%20diagram%20(1).jpg)
+
 link para editar: [miro](https://miro.com/welcomeonboard/HLPSUFIjvCDol7kjUmAXiGEZJMSPVxuoaoUiQS3YoGbMLmTNmZaKHI4uKwBt4jZI)
 
 ### Mock-up
