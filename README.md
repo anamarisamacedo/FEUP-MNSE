@@ -41,6 +41,6 @@ link para editar: [framer](https://framer.com/projects/Sequencer-App--xDJsuuMErW
 
 ### Technologies
 
-* [React](https://reactjs.org/): JavaScript library for building user interfaces
-* ? Shards React ?
+* [React](https://reactjs.org/): JavaScript library for building web applications
+* [Node.js](https://nodejs.org/): Javascript runtime
 * [Tonejs](https://tonejs.github.io/): Web Audio framework for creating interactive music in the browser
