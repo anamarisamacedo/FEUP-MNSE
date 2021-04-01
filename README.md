@@ -1,8 +1,8 @@
-# Title - TBD
+# Jam It!
 
 ### Overview
 
-(Name TBD) is a web application in which people can have fun by creating music together. Users join lobbies and take turns writing sections of the song. When they're done, they can export their work to several formats and keep it for themselves.
+Jam It! is a solution for people who want to produce music together with their friends and have fun at the same time. It is a web application in which people can create music together at real-time. Users join lobbies and take turns writing sections of the song. When they're done, they can export their work to several formats and keep it for themselves.
 
 ### Types of Media
 The application uses different types of media, such as:
