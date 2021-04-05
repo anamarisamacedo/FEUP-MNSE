@@ -5,7 +5,7 @@ import TopBar from './TopBar/TopBar';
 import Sidebar from './Sidebar/Sidebar';
 import BottomBar from './BottomBar/BottomBar';
 
-function Session() {
+function Jam() {
   return (
     <Grid container spacing={1} alignItems="stretch">
       <Grid item xs={12} style={{height: '5vh'}}>
@@ -28,4 +28,4 @@ function Session() {
   )
 }
 
-export default Session;
+export default Jam;

@@ -1,7 +1,7 @@
 import { Switch, withRouter } from 'react-router-dom';
 import NavLinks from '../routing/navLinks.json';
 import Home from './content/Home/Home';
-import Session from './content/Session/Session';
+import Jam from './content/Jam/Jam';
 import PrivateRoute from '../routing/PrivateRoute';
 
 function createRoute(name, component) {
@@ -12,7 +12,7 @@ function Content() {
   return (
     <Switch>
       { createRoute('/', Home) }
-      { createRoute(NavLinks.session.link, Session) }
+      { createRoute(NavLinks.jam.link, Jam) }
     </Switch>
   );
 }

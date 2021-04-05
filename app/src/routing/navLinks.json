@@ -7,8 +7,8 @@
         "description": "Home",
         "link": "/"
     },
-    "session": {
-        "description": "Session",
-        "link": "/session"
+    "jam": {
+        "description": "Jam",
+        "link": "/jam"
     }
 }
