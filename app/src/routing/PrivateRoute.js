@@ -29,7 +29,7 @@ class PrivateRoute extends Component {
 }
 
 PrivateRoute.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.elementType.isRequired,
 };
 
 export default PrivateRoute;
