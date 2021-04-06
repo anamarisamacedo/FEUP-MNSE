@@ -1,39 +1,30 @@
 import React, { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 function Sequencer(props) {
-  const DEFAULT_N_ROWS = 12;
-  const DEFAULT_N_COLS = 16;
-  const DEFAULT_GRID_WIDTH = 1300;
-  const DEFAULT_GRID_HEIGHT = 600;
   const GRID_LINE_WIDTH = 1;
 
-  const nRows = props.nRows ? props.nRows : DEFAULT_N_ROWS;
-  const nCols = props.nCols ? props.nCols : DEFAULT_N_COLS;
-
-  const gridWidth = props.gridWidth ? props.gridWidth : DEFAULT_GRID_WIDTH;
-  const gridHeight = props.gridHeight ? props.gridHeight : DEFAULT_GRID_HEIGHT;
-
-  const cellWidth = gridWidth / nCols;
-  const cellHeight = gridHeight / nRows;
+  const cellWidth = props.gridWidth / props.nCols;
+  const cellHeight = props.gridHeight / props.nRows;
 
   const canvasRef = useRef(null);
 
-  const grid = Array(nRows)
+  const grid = Array(props.nRows)
     .fill()
-    .map(() => Array(nCols).fill(false));
+    .map(() => Array(props.nCols).fill(false));
 
   function draw(canvas, ctx) {
     ctx.fillStyle = '#F4F2F3';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (let x = 0; x < gridWidth + cellWidth; x += cellWidth) {
+    for (let x = 0; x < props.gridWidth + cellWidth; x += cellWidth) {
       ctx.moveTo(x, 0);
-      ctx.lineTo(x, gridHeight);
+      ctx.lineTo(x, props.gridHeight);
     }
 
-    for (let y = 0; y < gridHeight + cellHeight; y += cellHeight) {
+    for (let y = 0; y < props.gridHeight + cellHeight; y += cellHeight) {
       ctx.moveTo(0, y);
-      ctx.lineTo(gridWidth, y);
+      ctx.lineTo(props.gridWidth, y);
     }
 
     ctx.strokeStyle = '#06070E';
@@ -55,6 +46,31 @@ function Sequencer(props) {
     return { gridX, gridY };
   }
 
+  function fillCell(x, y, color) {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+
+    const topLeft = { x: x * cellWidth, y: y * cellHeight };
+
+    context.fillStyle = color;
+    context.fillRect(
+      topLeft.x + GRID_LINE_WIDTH,
+      topLeft.y + GRID_LINE_WIDTH,
+      cellWidth - GRID_LINE_WIDTH * 2,
+      cellHeight - GRID_LINE_WIDTH * 2,
+    );
+  }
+
+  function addNote(x, y) {
+    fillCell(x, y, '#000000');
+    grid[y][x] = true;
+  }
+
+  function removeNote(x, y) {
+    fillCell(x, y, '#F4F2F3');
+    grid[y][x] = false;
+  }
+
   function handleClick(event) {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
@@ -70,39 +86,28 @@ function Sequencer(props) {
     console.log(`[${gridX},${gridY}]`);
   }
 
-  function fillCell(x, y, color) {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    const topLeft = { x: x * cellWidth, y: y * cellHeight };
-
-    context.fillStyle = color;
-    context.fillRect(
-      topLeft.x + GRID_LINE_WIDTH,
-      topLeft.y + GRID_LINE_WIDTH,
-      cellWidth - GRID_LINE_WIDTH * 2,
-      cellHeight - GRID_LINE_WIDTH * 2
-    );
-  }
-
-  function addNote(x, y) {
-    fillCell(x, y, '#000000');
-    grid[y][x] = true;
-  }
-
-  function removeNote(x, y) {
-    fillCell(x, y, '#F4F2F3');
-    grid[y][x] = false;
-  }
-
   return (
     <canvas
       ref={canvasRef}
       onClick={handleClick}
-      width={gridWidth}
-      height={gridHeight}
-    ></canvas>
+      width={props.gridWidth}
+      height={props.gridHeight}
+    />
   );
 }
+
+Sequencer.propTypes = {
+  nRows: PropTypes.number,
+  nCols: PropTypes.number,
+  gridWidth: PropTypes.number,
+  gridHeight: PropTypes.number,
+};
+
+Sequencer.defaultProps = {
+  nRows: 12,
+  nCols: 16,
+  gridWidth: 1300,
+  gridHeight: 600,
+};
 
 export default Sequencer;

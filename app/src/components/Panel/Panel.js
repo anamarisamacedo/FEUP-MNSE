@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styles from './Panel.module.css';
 
 function Panel(props) {
@@ -8,4 +9,14 @@ function Panel(props) {
   );
 }
 
-export default Panel
+Panel.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  style: PropTypes.object,
+  children: PropTypes.node.isRequired,
+};
+
+Panel.defaultProps = {
+  style: {},
+};
+
+export default Panel;

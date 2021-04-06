@@ -5,7 +5,7 @@ import Jam from './content/Jam/Jam';
 import PrivateRoute from '../routing/PrivateRoute';
 
 function createRoute(name, component) {
-  return <PrivateRoute exact path={name} component={component} />
+  return <PrivateRoute exact path={name} component={component} />;
 }
 
 function Content() {

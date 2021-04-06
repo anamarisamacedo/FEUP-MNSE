@@ -4,7 +4,7 @@ function MainContainer() {
   return (
     // sidebar etc...
     <Content />
-  )
+  );
 }
 
 export default MainContainer;
