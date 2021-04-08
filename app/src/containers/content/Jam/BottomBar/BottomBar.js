@@ -1,14 +1,9 @@
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 
 function BottomBar() {
   return (
     <Grid container spacing={1}>
-
-      <Grid item container direction="column" xs={2} spacing={1} justify="center">
-        <PlayCircleFilledIcon color="primary" style={{ fontSize: 100 }} />
-      </Grid>
 
       <Grid item container direction="column" xs={1} spacing={2} justify="center">
         <Grid item style={{ textAlign: 'center' }}>

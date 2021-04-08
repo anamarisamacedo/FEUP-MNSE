@@ -20,6 +20,9 @@
     ]
   },
   "globals": {
-    "localStorage": true
+    "localStorage": true,
+    "Event": true,
+    "dispatchEvent": true,
+    "addEventListener": true
   }
 }

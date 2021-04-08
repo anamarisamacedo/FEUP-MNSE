@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import Panel from '../../../components/Panel/Panel';
-import Sequencer from '../../../components/Sequencer';
+import Sequencer from './Sequencer/Sequencer';
 import TopBar from './TopBar/TopBar';
 import Sidebar from './Sidebar/Sidebar';
 import BottomBar from './BottomBar/BottomBar';
