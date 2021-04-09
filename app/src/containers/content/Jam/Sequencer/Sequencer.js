@@ -128,7 +128,9 @@ class Sequencer extends React.Component {
     this.drawGrid();
     this.drawNotes();
 
-    this.fillCell(col, 0, 'rgba(255, 0, 0, 0.5)');
+    for (let row = 0; row < this.props.nRows; row += 1) {
+      this.fillCell(col, row, 'rgba(255, 0, 0, 0.5)');
+    }
   }
 
   canvasCoordsToGridCoords(x, y) {
