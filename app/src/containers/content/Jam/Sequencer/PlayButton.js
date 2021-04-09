@@ -12,6 +12,7 @@ class PlayButton extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   handleClick() {
@@ -22,7 +23,7 @@ class PlayButton extends React.Component {
   }
 
   handleKeyDown(event) {
-    if (event.key === 'Space') this.props.onClick();
+    if (event.code === 'Space') this.handleClick();
   }
 
   render() {
@@ -30,7 +31,7 @@ class PlayButton extends React.Component {
       <div onClick={this.handleClick} onKeyDown={this.handleKeyDown} role="button" tabIndex={0}>
         {
           this.state.isPlaying ? <PauseCircleFilledIcon color="primary" style={{ fontSize: '5em' }} />
-            : <PlayCircleFilledIcon color="primary" style={{ fontSize: '5em' }} />
+            : <PlayCircleFilledIcon color="primary" style={{ fontSize: '5em', margin: '0px' }} />
         }
       </div>
     );
