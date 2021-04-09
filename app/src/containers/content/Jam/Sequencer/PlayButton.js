@@ -31,7 +31,7 @@ class PlayButton extends React.Component {
       <div onClick={this.handleClick} onKeyDown={this.handleKeyDown} role="button" tabIndex={0}>
         {
           this.state.isPlaying ? <PauseCircleFilledIcon color="primary" style={{ fontSize: '5em' }} />
-            : <PlayCircleFilledIcon color="primary" style={{ fontSize: '5em', margin: '0px' }} />
+            : <PlayCircleFilledIcon color="primary" style={{ fontSize: '5em' }} />
         }
       </div>
     );
