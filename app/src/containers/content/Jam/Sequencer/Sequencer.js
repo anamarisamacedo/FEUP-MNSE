@@ -38,6 +38,7 @@ class Sequencer extends React.Component {
 
   componentDidMount() {
     this.drawGrid();
+    this.updateSequence();
   }
 
   async handleClick(event) {
