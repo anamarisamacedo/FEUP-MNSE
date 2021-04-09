@@ -37,10 +37,7 @@ class Sequencer extends React.Component {
   }
 
   componentDidMount() {
-    const canvas = this.canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    this.draw(canvas, context);
+    this.drawGrid();
   }
 
   async handleClick(event) {
@@ -85,18 +82,21 @@ class Sequencer extends React.Component {
 
   tick(time, col) {
     Tone.Draw.schedule(() => {
-      console.log('draw');
+      this.updatePlayHead(col);
     });
 
     for (let row = 0; row < this.props.nRows; row += 1) {
       if (this.grid[row][col]) {
-        const note = this.currentInstrument.notes[row];
+        const note = this.currentInstrument.notes[this.props.nRows - row - 1];
         this.currentInstrument.instrument.triggerAttackRelease(note, this.subdivision, time);
       }
     }
   }
 
-  draw(canvas, ctx) {
+  drawGrid() {
+    const canvas = this.canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
     ctx.fillStyle = '#F4F2F3';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -113,6 +113,21 @@ class Sequencer extends React.Component {
     ctx.strokeStyle = '#06070E';
     ctx.lineWidth = this.GRID_LINE_WIDTH;
     ctx.stroke();
+  }
+
+  drawNotes() {
+    for (let row = 0; row < this.props.nRows; row += 1) {
+      for (let col = 0; col < this.props.nCols; col += 1) {
+        if (this.grid[row][col]) this.fillCell(col, row, '#000000');
+      }
+    }
+  }
+
+  updatePlayHead(col) {
+    this.drawGrid();
+    this.drawNotes();
+
+    this.fillCell(col, 0, 'rgba(255, 0, 0, 0.5)');
   }
 
   canvasCoordsToGridCoords(x, y) {
@@ -145,7 +160,7 @@ class Sequencer extends React.Component {
   }
 
   removeNote(x, y) {
-    this.fillCell(x, y, '#F4F2F3');
+    this.fillCell(x, y, '#ffffff');
     this.grid[y][x] = false;
 
     this.updateSequence();
