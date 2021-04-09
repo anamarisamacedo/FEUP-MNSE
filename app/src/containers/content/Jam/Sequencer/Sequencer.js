@@ -62,6 +62,12 @@ class Sequencer extends React.Component {
   async togglePlay() {
     if (this.state.isPlaying) {
       Tone.Transport.stop();
+      this.updateSequence();
+
+      // Redraw grid to clear playhead
+      this.drawGrid();
+      this.drawNotes();
+
       this.setState({ isPlaying: false });
     } else {
       await Tone.start();
@@ -78,12 +84,12 @@ class Sequencer extends React.Component {
 
     this.currentSequence = new Tone.Sequence(this.tick,
       [...Array(this.props.nCols).keys()], this.subdivision).start(0);
-    this.currentSequence.loop = false;
   }
 
   tick(time, col) {
     Tone.Draw.schedule(() => {
-      this.updatePlayHead(col);
+      // Prevent updating playhead after playback has been stopped
+      if (this.state.isPlaying) this.updatePlayHead(col);
     });
 
     for (let row = 0; row < this.props.nRows; row += 1) {
