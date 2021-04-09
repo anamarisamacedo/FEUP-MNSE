@@ -50,7 +50,12 @@ class Sequencer extends React.Component {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    const { gridX, gridY } = this.canvasCoordsToGridCoords(x, y);
+    // Calculate scale factors so that mouse position is correctly
+    // determined when the canvas has been scalled using CSS
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const { gridX, gridY } = this.canvasCoordsToGridCoords(x * scaleX, y * scaleY);
 
     if (this.grid[gridY][gridX]) this.removeNote(gridX, gridY);
     else this.addNote(gridX, gridY);
