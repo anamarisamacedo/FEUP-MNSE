@@ -1,9 +1,16 @@
+const Statuses = {
+  CREATED: 'Created',
+  STARTED: 'Started',
+  OVER: 'Over',
+};
+
 class Jam {
   constructor(leader, settings) {
     this.id = null;
     this.leader = leader;
     this.settings = settings;
     this.users = [leader];
+    this.status = Statuses.CREATE;
   }
 
   addUser(username) {
@@ -25,4 +32,5 @@ class Jam {
   }
 }
 
+Jam.Statuses = Statuses;
 module.exports = Jam;
