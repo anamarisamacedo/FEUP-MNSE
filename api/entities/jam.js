@@ -10,7 +10,7 @@ class Jam {
     this.leader = leader;
     this.settings = settings;
     this.users = [leader];
-    this.status = Statuses.CREATE;
+    this.status = Statuses.CREATED;
   }
 
   addUser(username) {
