@@ -1,3 +1,4 @@
+import { io } from 'socket.io-client';
 import Grid from '@material-ui/core/Grid';
 import Panel from '../../../components/Panel/Panel';
 import Sequencer from './Sequencer/Sequencer';
@@ -6,6 +7,12 @@ import Sidebar from './Sidebar/Sidebar';
 import BottomBar from './BottomBar/BottomBar';
 
 function Jam() {
+  const socket = io('http://localhost:3001');
+
+  socket.on('connect', () => {
+    console.log('connected');
+  });
+
   return (
     <Grid container spacing={1} alignItems="stretch">
       <Grid item xs={12} style={{ height: '5vh' }}>
