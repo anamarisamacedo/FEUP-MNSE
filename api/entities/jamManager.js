@@ -8,20 +8,26 @@ const { nanoid } = require('nanoid');
 const Jam = require('./jam');
 const JamNotFoundError = require('../errors/JamNotFoundError');
 const JamAlreadyOverError = require('../errors/JamAlreadyOverError');
+const { Statuses } = require('./jam');
+
+function startServer() {
+  const port = 3001;
+
+  io.on('connection', (client) => {
+    console.log('client connected');
+    client.on('disconnect', () => { console.log('client disconnected'); });
+  });
+
+  io.listen(port);
+
+  console.log(`Jam It! Server running on port ${port}`);
+}
 
 class JamManager {
   constructor() {
     this.jams = [];
 
-    const port = 3001;
-    io.on('connection', (client) => {
-      console.log('client connected');
-      client.on('disconnect', () => { console.log('client disconnected'); });
-    });
-
-    io.listen(port);
-
-    console.log(`Jam It! Server running on port ${port}`);
+    startServer();
   }
 
   addJam(jam) {
