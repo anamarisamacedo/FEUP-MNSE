@@ -16,8 +16,13 @@ function leaveJam(username, jamId) {
   jamManager.removeUserFromJam(username, jamId);
 }
 
+function startJam(jamId) {
+  jamManager.startJam(jamId);
+}
+
 module.exports = {
   createJam,
   joinJam,
   leaveJam,
+  startJam,
 };

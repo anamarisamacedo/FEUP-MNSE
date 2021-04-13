@@ -16,6 +16,8 @@ function joinJam(req, res) {
 
   try {
     jamService.joinJam(username, jamId);
+
+    return res.status(204).end();
   } catch (err) {
     if (err instanceof JamNotFoundError) return res.status(500).json(new ErrorMessage('Jam not found'));
 
@@ -23,8 +25,6 @@ function joinJam(req, res) {
 
     return res.status(500).json(new ErrorMessage());
   }
-
-  return res.status(204).end();
 }
 
 function leaveJam(req, res) {
@@ -36,8 +36,25 @@ function leaveJam(req, res) {
   return res.status(204).end();
 }
 
+function startJam(req, res) {
+  const { jamId } = req.params;
+
+  try {
+    jamService.startJam(jamId);
+
+    return res.status(204).end();
+  } catch (err) {
+    if (err instanceof JamNotFoundError) return res.status(500).json(new ErrorMessage('Jam not found'));
+
+    if (err instanceof JamAlreadyOverError) return res.status(500).json(new ErrorMessage('Jam already over'));
+
+    return res.status(500).json(new ErrorMessage());
+  }
+}
+
 module.exports = {
   createJam,
   joinJam,
   leaveJam,
+  startJam,
 };
