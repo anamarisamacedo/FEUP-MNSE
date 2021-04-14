@@ -1,38 +1,47 @@
-import { io } from 'socket.io-client';
-import Grid from '@material-ui/core/Grid';
-import Panel from '../../../components/Panel/Panel';
-import Sequencer from './Sequencer/Sequencer';
-import TopBar from './TopBar/TopBar';
-import Sidebar from './Sidebar/Sidebar';
-import BottomBar from './BottomBar/BottomBar';
+import React from 'react';
+import Lobby from './Lobby/Lobby';
+import Game from './Game/Game';
+import Connection from '../../../utils/Connection';
+import ConnectionContext from '../../../utils/ConnectionContext';
 
-function Jam() {
-  const socket = io('http://localhost:3001');
+class Jam extends React.Component {
+  constructor(props) {
+    super(props);
 
-  socket.on('connect', () => {
-    console.log('connected');
-  });
+    this.state = {
+      hasStarted: false,
+      connection: null,
+    };
+  }
 
-  return (
-    <Grid container spacing={1} alignItems="stretch">
-      <Grid item xs={12} style={{ height: '5vh' }}>
-        <TopBar jamTitle="JamTitle" />
-      </Grid>
-      <Grid item xs={10} style={{ height: '80vh' }}>
-        <Panel style={{ justifyContent: 'space-evenly' }}>
-          <Sequencer />
-        </Panel>
-      </Grid>
-      <Grid item xs={2} style={{ minHeight: '80vh' }}>
-        <Panel>
-          <Sidebar />
-        </Panel>
-      </Grid>
-      <Grid item xs={12} style={{ height: '5vh' }}>
-        <BottomBar />
-      </Grid>
-    </Grid>
-  );
+  componentDidMount() {
+    const connection = this.setupConnection();
+    this.setState({ connection });
+  }
+
+  componentWillUnmount() {
+    this.state.connection.end();
+  }
+
+  setupConnection() {
+    const connection = new Connection('user1', 'jam1');
+
+    connection.socket.on('start-jam', () => {
+      console.log('received start-jam');
+
+      this.setState({ hasStarted: true });
+    });
+
+    return connection;
+  }
+
+  render() {
+    return (
+      <ConnectionContext.Provider value={this.state.connection}>
+        { this.state.hasStarted ? <Game /> : <Lobby /> }
+      </ConnectionContext.Provider>
+    );
+  }
 }
 
 export default Jam;
