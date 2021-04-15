@@ -7,6 +7,16 @@ const Statuses = {
 };
 
 class Jam {
+  /**
+   * Create a new Jam
+   * @param {string} leader the username of the Jam Leader
+   * @param {Object} settings the Jam's settings
+   * @param {string} settings.title the Jam's title
+   * @param {Number} settings.bpm BPM to be used during playback of the Jam
+   * @param {Number} settings.measures number of measures
+   * @param {Number} settings.turnDuration duration of each player turn (in seconds)
+   * @param {string[]} settings.instruments array of instruments names that can be used
+   */
   constructor(leader, settings) {
     this.id = null;
     this.leader = leader;
