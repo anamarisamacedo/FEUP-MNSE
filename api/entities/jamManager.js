@@ -15,8 +15,6 @@ class JamManager {
         origin: 'http://localhost:3000',
       },
     }));
-
-    this.startServer();
   }
 
   startServer() {
