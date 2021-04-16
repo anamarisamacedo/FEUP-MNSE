@@ -23,6 +23,10 @@ class Jam {
     this.settings = settings;
     this.users = [leader];
     this.status = Statuses.CREATED;
+    this.turn = 0;
+    this.gamePlan = this.calculateGamePlan();
+    // used to cancel turn notification scheduling if a player passes their turn
+    this.timeout = null;
   }
 
   addUser(username) {
@@ -76,6 +80,23 @@ class Jam {
     }
 
     return plan;
+  }
+
+  /**
+   * Returns information about the next turn
+   * @returns the next turn or null if there are no turns left
+   */
+  nextTurn() {
+    const turn = this.gamePlan[this.turn];
+    const totalTurns = this.settings.measures * this.settings.instruments.length;
+
+    if (this.turn < totalTurns) {
+      this.turn += 1;
+    } else return null;
+
+    console.log(this.turn);
+
+    return turn;
   }
 }
 

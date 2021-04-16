@@ -49,8 +49,6 @@ class JamManager {
     jam.giveId(id);
 
     this.jams.push(jam);
-
-    console.log(this.jams);
   }
 
   addUserToJam(username, jamId) {
@@ -74,12 +72,20 @@ class JamManager {
 
     if (index < 0) throw new JamNotFoundError();
 
-    if (this.jams[index].status === Jam.Statuses.OVER) throw new JamAlreadyOverError();
+    const jam = this.jams[index];
+
+    if (jam.status === Jam.Statuses.OVER) throw new JamAlreadyOverError();
 
     // Broadcast to users who have joined the jam that it has started
     this.socket.to(jamId).emit('start-jam');
 
-    this.jams[index].status = Statuses.STARTED;
+    jam.status = Statuses.STARTED;
+
+    // Schedule next turn notifications for the jam
+    this.notifyNextTurn(jam);
+    this.scheduleTurnNotifications(jam);
+
+    this.jams[index] = jam;
   }
 
   listUsersInJam(jamId) {
@@ -88,6 +94,25 @@ class JamManager {
     if (index < 0) return [];
 
     return this.jams[index].users;
+  }
+
+  notifyNextTurn(jam) {
+    const nextTurn = jam.nextTurn(true);
+    console.log(nextTurn);
+
+    if (nextTurn) this.socket.to(jam.id).emit('next-turn', nextTurn);
+    else {
+      const index = this.jams.findIndex((j) => j.id === jam.id);
+      clearInterval(this.jams[index].timeout);
+    }
+  }
+
+  scheduleTurnNotifications(jam) {
+    const index = this.jams.findIndex((j) => j.id === jam.id);
+
+    this.jams[index].timeout = setInterval(
+      this.notifyNextTurn.bind(this), jam.settings.turnDuration * 1000, jam,
+    );
   }
 }
 
