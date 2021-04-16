@@ -13,6 +13,8 @@ class Sequencer extends React.Component {
     };
 
     // Graphical Properties
+    // =====================================================
+
     this.GRID_LINE_WIDTH = 1;
 
     this.cellWidth = props.gridWidth / props.nCols;
@@ -22,6 +24,7 @@ class Sequencer extends React.Component {
 
     this.backgroundColor = '#F4F2F3';
     this.lineColor = '#06070E';
+    this.playHeadColor = 'rgba(255, 0, 0, 0.5)';
 
     // =====================================================
 
@@ -137,7 +140,7 @@ class Sequencer extends React.Component {
   drawNotes() {
     for (let row = 0; row < this.props.nRows; row += 1) {
       for (let col = 0; col < this.props.nCols; col += 1) {
-        if (this.grid[row][col].length > 0) this.fillCell(col, row, '#000000');
+        if (this.grid[row][col].length > 0) this.fillCell(col, row, this.instrument.color);
       }
     }
   }
@@ -147,7 +150,7 @@ class Sequencer extends React.Component {
     this.drawNotes();
 
     for (let row = 0; row < this.props.nRows; row += 1) {
-      this.fillCell(col, row, 'rgba(255, 0, 0, 0.5)');
+      this.fillCell(col, row, this.playHeadColor);
     }
   }
 
@@ -174,7 +177,7 @@ class Sequencer extends React.Component {
   }
 
   addNote(x, y) {
-    this.fillCell(x, y, '#000000');
+    this.fillCell(x, y, this.instrument.color);
     this.grid[y][x].push(this.props.instrumentId);
 
     this.updateSequence();
