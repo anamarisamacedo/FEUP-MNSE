@@ -12,6 +12,7 @@ class Sequencer extends React.Component {
       isPlaying: false,
     };
 
+    // Graphical Properties
     this.GRID_LINE_WIDTH = 1;
 
     this.cellWidth = props.gridWidth / props.nCols;
@@ -19,13 +20,18 @@ class Sequencer extends React.Component {
 
     this.canvasRef = React.createRef();
 
+    this.backgroundColor = '#F4F2F3';
+    this.lineColor = '#06070E';
+
+    // =====================================================
+
     this.grid = Array(props.nRows)
       .fill()
-      .map(() => Array(props.nCols).fill(false));
+      .map(() => Array(props.nCols).fill().map(() => []));
 
     this.subdivision = '8n';
     this.currentSequence = [];
-    this.currentInstrument = instruments.TestSynth;
+    this.instrument = instruments[this.props.instrumentId];
 
     this.handleClick = this.handleClick.bind(this);
     this.togglePlay = this.togglePlay.bind(this);
@@ -55,8 +61,12 @@ class Sequencer extends React.Component {
 
     const { gridX, gridY } = this.canvasCoordsToGridCoords(x * scaleX, y * scaleY);
 
-    if (this.grid[gridY][gridX]) this.removeNote(gridX, gridY);
-    else this.addNote(gridX, gridY);
+    const instrumentsInCell = this.grid[gridY][gridX];
+
+    if (instrumentsInCell.length > 0
+      && instrumentsInCell[instrumentsInCell.length - 1] === this.props.instrumentId) {
+      this.removeNote(gridX, gridY);
+    } else this.addNote(gridX, gridY);
   }
 
   async togglePlay() {
@@ -84,6 +94,8 @@ class Sequencer extends React.Component {
 
     this.currentSequence = new Tone.Sequence(this.tick,
       [...Array(this.props.nCols).keys()], this.subdivision).start(0);
+
+    this.props.onUpdateGrid(this.grid);
   }
 
   tick(time, col) {
@@ -93,9 +105,9 @@ class Sequencer extends React.Component {
     });
 
     for (let row = 0; row < this.props.nRows; row += 1) {
-      if (this.grid[row][col]) {
-        const note = this.currentInstrument.notes[this.props.nRows - row - 1];
-        this.currentInstrument.instrument.triggerAttackRelease(note, this.subdivision, time);
+      if (this.grid[row][col].length > 0) {
+        const note = this.instrument.notes[this.props.nRows - row - 1];
+        this.instrument.triggerAttackRelease(note, this.subdivision, time);
       }
     }
   }
@@ -104,7 +116,7 @@ class Sequencer extends React.Component {
     const canvas = this.canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#F4F2F3';
+    ctx.fillStyle = this.backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let x = 0; x < this.props.gridWidth + this.cellWidth; x += this.cellWidth) {
@@ -117,7 +129,7 @@ class Sequencer extends React.Component {
       ctx.lineTo(this.props.gridWidth, y);
     }
 
-    ctx.strokeStyle = '#06070E';
+    ctx.strokeStyle = this.lineColor;
     ctx.lineWidth = this.GRID_LINE_WIDTH;
     ctx.stroke();
   }
@@ -125,7 +137,7 @@ class Sequencer extends React.Component {
   drawNotes() {
     for (let row = 0; row < this.props.nRows; row += 1) {
       for (let col = 0; col < this.props.nCols; col += 1) {
-        if (this.grid[row][col]) this.fillCell(col, row, '#000000');
+        if (this.grid[row][col].length > 0) this.fillCell(col, row, '#000000');
       }
     }
   }
@@ -163,14 +175,14 @@ class Sequencer extends React.Component {
 
   addNote(x, y) {
     this.fillCell(x, y, '#000000');
-    this.grid[y][x] = true;
+    this.grid[y][x].push(this.props.instrumentId);
 
     this.updateSequence();
   }
 
   removeNote(x, y) {
-    this.fillCell(x, y, '#ffffff');
-    this.grid[y][x] = false;
+    this.fillCell(x, y, this.backgroundColor);
+    this.grid[y][x].pop();
 
     this.updateSequence();
   }
@@ -196,6 +208,8 @@ Sequencer.propTypes = {
   nCols: PropTypes.number,
   gridWidth: PropTypes.number,
   gridHeight: PropTypes.number,
+  onUpdateGrid: PropTypes.func,
+  instrumentId: PropTypes.string.isRequired,
 };
 
 Sequencer.defaultProps = {
@@ -203,6 +217,7 @@ Sequencer.defaultProps = {
   nCols: 16,
   gridWidth: 1300,
   gridHeight: 600,
+  onUpdateGrid: (() => {}),
 };
 
 export default Sequencer;
