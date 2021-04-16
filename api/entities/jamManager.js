@@ -73,6 +73,7 @@ class JamManager {
     if (index < 0) throw new JamNotFoundError();
 
     const jam = this.jams[index];
+    jam.calculateGamePlan();
 
     if (jam.status === Jam.Statuses.OVER) throw new JamAlreadyOverError();
 

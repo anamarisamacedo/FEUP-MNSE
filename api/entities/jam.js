@@ -24,7 +24,7 @@ class Jam {
     this.users = [leader];
     this.status = Statuses.CREATED;
     this.turn = 0;
-    this.gamePlan = this.calculateGamePlan();
+    this.gamePlan = null;
     // used to cancel turn notification scheduling if a player passes their turn
     this.timeout = null;
   }
@@ -78,6 +78,8 @@ class Jam {
 
       if (instrument.index === instruments.length - 1) currMeasure += 1;
     }
+
+    this.gamePlan = plan;
 
     return plan;
   }
