@@ -9,6 +9,7 @@ const { Statuses } = require('./jam');
 class JamManager {
   constructor() {
     this.jams = [];
+    this.connectedClients = [];
 
     this.socket = io((server, {
       cors: {
@@ -31,13 +32,27 @@ class JamManager {
       console.log(`User ${username} joined Jam ${jamId}`);
 
       this.addUserToJam(username, jamId);
+      this.connectedClients.push(client);
 
       client.on('disconnect', () => {
         this.removeUserFromJam(username, jamId);
+        this.connectedClients.splice(this.connectedClients.indexOf(client), 1);
 
         console.log(`User ${username} left Jam ${jamId}`);
       });
+
+      client.on('song-data', (song) => {
+        console.log(`song-data: ${jamId}`);
+        console.log(song);
+
+        // Share the song data with all players in the Jam
+        this.socket.to(jamId).emit('song-data', song);
+
+        this.notifyNextTurn(jamId);
+      });
     });
+
+    console.log(this.socket);
 
     this.socket.listen(port);
 
@@ -83,8 +98,7 @@ class JamManager {
     jam.status = Statuses.STARTED;
 
     // Schedule next turn notifications for the jam
-    this.notifyNextTurn(jam);
-    this.scheduleTurnNotifications(jam);
+    this.notifyNextTurn(jam.id);
 
     this.jams[index] = jam;
   }
@@ -97,23 +111,35 @@ class JamManager {
     return this.jams[index].users;
   }
 
-  notifyNextTurn(jam) {
+  notifyNextTurn(jamId) {
+    const index = this.jams.findIndex((jam) => jam.id === jamId);
+    const jam = this.jams[index];
+
     const nextTurn = jam.nextTurn(true);
     console.log(nextTurn);
 
-    if (nextTurn) this.socket.to(jam.id).emit('next-turn', nextTurn);
-    else {
-      const index = this.jams.findIndex((j) => j.id === jam.id);
-      clearInterval(this.jams[index].timeout);
+    if (nextTurn) {
+      jam.timeout = setTimeout(
+        this.requestSongData.bind(this),
+        jam.settings.turnDuration * 1000,
+        jam,
+        nextTurn.player,
+      );
+
+      this.socket.to(jam.id).emit('next-turn', nextTurn);
+    } else {
+      clearTimeout(jam.timeout);
     }
+
+    this.jams[index] = jam;
   }
 
-  scheduleTurnNotifications(jam) {
-    const index = this.jams.findIndex((j) => j.id === jam.id);
+  requestSongData(jam, username) {
+    this.socket.to(jam.id).emit('req-song-data', username);
+  }
 
-    this.jams[index].timeout = setInterval(
-      this.notifyNextTurn.bind(this), jam.settings.turnDuration * 1000, jam,
-    );
+  findSocketByUser(username) {
+    return this.connectedClients.find((socket) => socket.handshake.query.username === username);
   }
 }
 

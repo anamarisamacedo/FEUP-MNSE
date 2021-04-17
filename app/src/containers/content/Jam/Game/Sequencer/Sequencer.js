@@ -206,7 +206,7 @@ class Sequencer extends React.Component {
 
     this.updateSequence();
 
-    this.fillCell(x, y, this.instrument.color);
+    this.fillCell(x, y);
   }
 
   removeNote(x, y) {

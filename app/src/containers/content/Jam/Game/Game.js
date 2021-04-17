@@ -25,11 +25,29 @@ class Game extends React.Component {
     const conn = this.context;
 
     conn.socket.on('next-turn', (turn) => {
+      console.log('next-turn');
+      console.log(turn);
       this.setState({ currentMeasure: turn.measure, currentInstrument: turn.instrument });
 
       if (turn.player === 'user1') {
         this.setState({ isOwnTurn: true });
       } else this.setState({ isOwnTurn: false });
+    });
+
+    conn.socket.on('req-song-data', (username) => {
+      console.log(`received req-song-data ${username}`);
+
+      if (username === 'user1') {
+        console.log('sending song data');
+        console.log(this.state.song);
+        conn.socket.emit('song-data', this.state.song);
+      }
+    });
+
+    conn.socket.on('song-data', (song) => {
+      console.log('received song-data');
+      console.log(song);
+      this.setState({ song });
     });
   }
 
