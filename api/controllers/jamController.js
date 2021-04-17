@@ -44,9 +44,9 @@ function startJam(req, res) {
 
     return res.status(204).end();
   } catch (err) {
-    if (err instanceof JamNotFoundError) return res.status(500).json(new ErrorMessage('Jam not found'));
+    if (err instanceof JamNotFoundError) return res.status(400).json(new ErrorMessage('Jam not found'));
 
-    if (err instanceof JamAlreadyOverError) return res.status(500).json(new ErrorMessage('Jam already over'));
+    if (err instanceof JamAlreadyOverError) return res.status(400).json(new ErrorMessage('Jam already over'));
 
     return res.status(500).json(new ErrorMessage());
   }
