@@ -110,7 +110,10 @@ class Sequencer extends React.Component {
     for (let row = 0; row < this.props.nRows; row += 1) {
       if (this.grid[row][col].length > 0) {
         const note = this.instrument.notes[this.props.nRows - row - 1];
-        this.instrument.triggerAttackRelease(note, this.subdivision, time);
+
+        for (const instrumentId of this.grid[row][col]) {
+          instruments[instrumentId].triggerAttackRelease(note, this.subdivision, time);
+        }
       }
     }
   }
