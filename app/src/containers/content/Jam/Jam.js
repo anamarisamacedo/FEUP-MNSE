@@ -26,6 +26,9 @@ class Jam extends React.Component {
   setupConnection() {
     const connection = new Connection('user1', 'jam1');
 
+    // The line below can be uncommented for testing purposes
+    // this.setState({ hasStarted: true });
+
     connection.socket.on('start-jam', () => {
       console.log('received start-jam');
 
