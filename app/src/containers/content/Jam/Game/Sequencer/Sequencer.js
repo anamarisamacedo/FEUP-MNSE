@@ -140,7 +140,7 @@ class Sequencer extends React.Component {
   drawNotes() {
     for (let row = 0; row < this.props.nRows; row += 1) {
       for (let col = 0; col < this.props.nCols; col += 1) {
-        if (this.grid[row][col].length > 0) this.fillCell(col, row, this.instrument.color);
+        if (this.grid[row][col].length > 0) this.fillCell(col, row);
       }
     }
   }
@@ -165,29 +165,53 @@ class Sequencer extends React.Component {
     const canvas = this.canvasRef.current;
     const context = canvas.getContext('2d');
 
+    const instrumentsInCell = this.grid[y][x];
+
     const topLeft = { x: x * this.cellWidth, y: y * this.cellHeight };
 
-    context.fillStyle = color;
-    context.fillRect(
-      topLeft.x + this.GRID_LINE_WIDTH,
-      topLeft.y + this.GRID_LINE_WIDTH,
-      this.cellWidth - this.GRID_LINE_WIDTH * 2,
-      this.cellHeight - this.GRID_LINE_WIDTH * 2,
-    );
+    if (instrumentsInCell.length > 0) {
+      // When adding a note
+      const rectHeight = this.cellHeight / instrumentsInCell.length;
+
+      for (let i = 0; i < instrumentsInCell.length; i += 1) {
+        const instrumentId = instrumentsInCell[i];
+
+        context.fillStyle = instruments[instrumentId].color;
+
+        context.fillRect(
+          topLeft.x + this.GRID_LINE_WIDTH,
+          topLeft.y + this.GRID_LINE_WIDTH + i * rectHeight,
+          this.cellWidth - this.GRID_LINE_WIDTH * 2,
+          rectHeight - this.GRID_LINE_WIDTH * 2,
+        );
+      }
+    } else {
+      // When removing a note
+      context.fillStyle = color;
+
+      context.fillRect(
+        topLeft.x + this.GRID_LINE_WIDTH,
+        topLeft.y + this.GRID_LINE_WIDTH,
+        this.cellWidth - this.GRID_LINE_WIDTH * 2,
+        this.cellHeight - this.GRID_LINE_WIDTH * 2,
+      );
+    }
   }
 
   addNote(x, y) {
-    this.fillCell(x, y, this.instrument.color);
     this.grid[y][x].push(this.props.instrumentId);
 
     this.updateSequence();
+
+    this.fillCell(x, y, this.instrument.color);
   }
 
   removeNote(x, y) {
-    this.fillCell(x, y, this.backgroundColor);
     this.grid[y][x].pop();
 
     this.updateSequence();
+
+    this.fillCell(x, y, this.backgroundColor);
   }
 
   render() {
