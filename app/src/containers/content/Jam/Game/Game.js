@@ -13,17 +13,32 @@ class Game extends React.Component {
 
     this.state = {
       isOwnTurn: false,
+      currentMeasure: 0,
+      currentInstrument: 'testSynth',
+      song: [],
     };
+
+    this.handleGridUpdate = this.handleGridUpdate.bind(this);
   }
 
   componentDidMount() {
     const conn = this.context;
 
     conn.socket.on('next-turn', (turn) => {
+      this.setState({ currentMeasure: turn.measure, currentInstrument: turn.instrument });
+
       if (turn.player === 'user1') {
         this.setState({ isOwnTurn: true });
       } else this.setState({ isOwnTurn: false });
     });
+  }
+
+  handleGridUpdate(grid) {
+    const { song } = this.state;
+
+    song[this.state.currentMeasure] = grid;
+
+    this.setState({ song });
   }
 
   render() {
@@ -36,7 +51,10 @@ class Game extends React.Component {
         </Grid>
         <Grid item xs={10} style={{ height: '80vh' }}>
           <Panel style={{ justifyContent: 'space-evenly' }}>
-            <Sequencer />
+            <Sequencer
+              instrumentId={this.state.currentInstrument}
+              onUpdateGrid={this.handleGridUpdate}
+            />
           </Panel>
         </Grid>
         <Grid item xs={2} style={{ minHeight: '80vh' }}>
