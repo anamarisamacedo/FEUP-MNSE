@@ -51,6 +51,10 @@ class Sequencer extends React.Component {
     this.updateSequence();
   }
 
+  componentWillUnmount() {
+    Tone.Transport.stop();
+  }
+
   async handleClick(event) {
     const canvas = this.canvasRef.current;
     const rect = canvas.getBoundingClientRect();
@@ -121,6 +125,9 @@ class Sequencer extends React.Component {
 
   drawGrid() {
     const canvas = this.canvasRef.current;
+
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
 
     ctx.fillStyle = this.backgroundColor;
@@ -167,6 +174,9 @@ class Sequencer extends React.Component {
 
   fillCell(x, y, color) {
     const canvas = this.canvasRef.current;
+
+    if (!canvas) return;
+
     const context = canvas.getContext('2d');
 
     const instrumentsInCell = this.grid[y][x];
