@@ -28,13 +28,13 @@ class Sequencer extends React.Component {
 
     // =====================================================
 
-    this.grid = Array(props.nRows)
+    this.grid = props.grid || (Array(props.nRows)
       .fill()
-      .map(() => Array(props.nCols).fill().map(() => []));
+      .map(() => Array(props.nCols).fill().map(() => [])));
 
     this.subdivision = '8n';
     this.currentSequence = [];
-    this.instrument = instruments[this.props.instrumentId];
+    this.instrument = instruments[props.instrumentId];
 
     this.handleClick = this.handleClick.bind(this);
     this.togglePlay = this.togglePlay.bind(this);
@@ -47,6 +47,7 @@ class Sequencer extends React.Component {
 
   componentDidMount() {
     this.drawGrid();
+    this.drawNotes();
     this.updateSequence();
   }
 
@@ -240,6 +241,7 @@ Sequencer.propTypes = {
   gridHeight: PropTypes.number,
   onUpdateGrid: PropTypes.func,
   instrumentId: PropTypes.string.isRequired,
+  grid: PropTypes.arrayOf(PropTypes.array),
 };
 
 Sequencer.defaultProps = {
@@ -248,6 +250,7 @@ Sequencer.defaultProps = {
   gridWidth: 1300,
   gridHeight: 600,
   onUpdateGrid: (() => {}),
+  grid: null,
 };
 
 export default Sequencer;

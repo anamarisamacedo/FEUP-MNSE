@@ -74,6 +74,7 @@ class Game extends React.Component {
             <Sequencer
               instrumentId={this.state.currentInstrument}
               onUpdateGrid={this.handleGridUpdate}
+              grid={this.state.song[this.state.currentMeasure]}
             />
           </Panel>
         </Grid>
