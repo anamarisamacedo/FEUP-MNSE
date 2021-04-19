@@ -3,8 +3,7 @@ import Lobby from './Lobby/Lobby';
 import Game from './Game/Game';
 import Login from './Login/Login';
 import Connection from '../../../utils/Connection';
-import ConnectionContext from '../../../utils/ConnectionContext';
-import UserContext from '../../../utils/UserContext';
+import { AppContextProvider } from '../../../utils/AppContext';
 
 class Jam extends React.Component {
   constructor(props) {
@@ -46,11 +45,9 @@ class Jam extends React.Component {
   render() {
     if (this.state.username) {
       return (
-        <UserContext.Provider value={this.state.username}>
-          <ConnectionContext.Provider value={this.state.connection}>
-            { this.state.hasStarted ? <Game /> : <Lobby /> }
-          </ConnectionContext.Provider>
-        </UserContext.Provider>
+        <AppContextProvider username={this.state.username} connection={this.state.connection}>
+          { this.state.hasStarted ? <Game /> : <Lobby /> }
+        </AppContextProvider>
       );
     }
 
