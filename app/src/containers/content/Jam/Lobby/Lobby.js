@@ -1,13 +1,13 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import ConnectionContext from '../../../../utils/ConnectionContext';
+import UserContext from '../../../../utils/UserContext';
 
 function Lobby() {
   const conn = useContext(ConnectionContext);
+  const username = useContext(UserContext);
 
-  useEffect(() => {
-    if (!conn) return;
-    console.log(conn);
-  }, [conn]);
+  console.log(conn);
+  console.log(username);
 
   return (
     <span>Lobby</span>

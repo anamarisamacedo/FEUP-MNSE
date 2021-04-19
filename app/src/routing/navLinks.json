@@ -1,8 +1,4 @@
 {
-    "login": {
-        "description": "Login",
-        "link": "/login" 
-    },
     "home": {
         "description": "Home",
         "link": "/"

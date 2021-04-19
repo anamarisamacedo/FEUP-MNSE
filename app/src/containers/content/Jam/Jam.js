@@ -1,8 +1,10 @@
 import React from 'react';
 import Lobby from './Lobby/Lobby';
 import Game from './Game/Game';
+import Login from './Login/Login';
 import Connection from '../../../utils/Connection';
 import ConnectionContext from '../../../utils/ConnectionContext';
+import UserContext from '../../../utils/UserContext';
 
 class Jam extends React.Component {
   constructor(props) {
@@ -11,20 +13,23 @@ class Jam extends React.Component {
     this.state = {
       hasStarted: false,
       connection: null,
+      username: null,
     };
-  }
 
-  componentDidMount() {
-    const connection = this.setupConnection();
-    this.setState({ connection });
+    this.handleSetUsername = this.handleSetUsername.bind(this);
   }
 
   componentWillUnmount() {
     this.state.connection.end();
   }
 
-  setupConnection() {
-    const connection = new Connection('user1', 'jam1');
+  handleSetUsername(username) {
+    const connection = this.setupConnection(username);
+    this.setState({ connection, username });
+  }
+
+  setupConnection(username) {
+    const connection = new Connection(username, 'jam1');
 
     // The line below can be uncommented for testing purposes
     // this.setState({ hasStarted: true });
@@ -39,11 +44,17 @@ class Jam extends React.Component {
   }
 
   render() {
-    return (
-      <ConnectionContext.Provider value={this.state.connection}>
-        { this.state.hasStarted ? <Game /> : <Lobby /> }
-      </ConnectionContext.Provider>
-    );
+    if (this.state.username) {
+      return (
+        <UserContext.Provider value={this.state.username}>
+          <ConnectionContext.Provider value={this.state.connection}>
+            { this.state.hasStarted ? <Game /> : <Lobby /> }
+          </ConnectionContext.Provider>
+        </UserContext.Provider>
+      );
+    }
+
+    return <Login onSetUsername={this.handleSetUsername} />;
   }
 }
 
