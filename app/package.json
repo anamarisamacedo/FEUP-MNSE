@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource/galada": "^4.2.3",
+    "@fontsource/inter": "^4.2.2",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@react-navigation/native": "^5.9.4",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "socket.io-client": "^4.0.1",
+    "stack-styled": "^3.2.1",
+    "styled-components": "^5.2.3",
     "tone": "^14.7.77"
   },
   "devDependencies": {
@@ -24,7 +29,7 @@
     "eslint-plugin-react-hooks": "^4.2.0"
   },
   "scripts": {
-    "start": "ESLINT_NO_DEV_ERRORS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "ESLINT_NO_DEV_ERRORS=true react-scripts build"
   },
   "browserslist": {
