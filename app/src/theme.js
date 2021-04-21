@@ -1,4 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import '@fontsource/galada';
+import '@fontsource/inter';
 
 const theme = createMuiTheme({
   palette: {
@@ -15,6 +17,20 @@ const theme = createMuiTheme({
       primary: '#FFFFFF',
       secondary: '#06070E',
     },
+  },
+  typography: {
+    fontFamily: [
+      'Inter',
+    ].join(','),
+  },
+});
+
+export const logoFont = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Galada',
+      'Inter',
+    ].join(','),
   },
 });
 

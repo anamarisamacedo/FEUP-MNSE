@@ -1,0 +1,12 @@
+.HowToPlay {
+    width: 373px;
+    height: 94px;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: "Inter-Bold", "Inter", sans-serif;
+    color: #F4F2F3;
+  }
