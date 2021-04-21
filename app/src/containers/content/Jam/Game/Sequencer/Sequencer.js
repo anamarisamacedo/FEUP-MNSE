@@ -28,13 +28,17 @@ class Sequencer extends React.Component {
 
     // =====================================================
 
-    this.grid = props.grid || (Array(props.nRows)
+    this.grid = this.props.song[this.props.currentMeasure] || (Array(props.nRows)
       .fill()
       .map(() => Array(props.nCols).fill().map(() => [])));
 
     this.subdivision = '8n';
     this.currentSequence = [];
     this.instrument = instruments[props.instrumentId];
+
+    this.playingMeasure = 0;
+    // Measure to reset to when playback stops
+    this.RESET_MEASURE = this.props.currentMeasure;
 
     this.handleClick = this.handleClick.bind(this);
     this.togglePlay = this.togglePlay.bind(this);
@@ -47,7 +51,7 @@ class Sequencer extends React.Component {
 
   componentDidMount() {
     this.drawGrid();
-    this.drawNotes();
+    this.drawNotes(this.props.currentMeasure);
     this.updateSequence();
   }
 
@@ -56,6 +60,9 @@ class Sequencer extends React.Component {
   }
 
   async handleClick(event) {
+    // Prevent editing previous measures
+    // if (this.playingMeasure !== this.props.currentMeasure) return;
+
     const canvas = this.canvasRef.current;
     const rect = canvas.getBoundingClientRect();
 
@@ -69,7 +76,10 @@ class Sequencer extends React.Component {
 
     const { gridX, gridY } = this.canvasCoordsToGridCoords(x * scaleX, y * scaleY);
 
-    const instrumentsInCell = this.grid[gridY][gridX];
+    const grid = this.props.song[this.props.currentMeasure];
+    if (!grid) return;
+
+    const instrumentsInCell = grid[gridY][gridX];
 
     if (instrumentsInCell.length > 0
       && instrumentsInCell[instrumentsInCell.length - 1] === this.props.instrumentId) {
@@ -79,12 +89,14 @@ class Sequencer extends React.Component {
 
   async togglePlay() {
     if (this.state.isPlaying) {
+      // Reset playing measure
+      this.playingMeasure = this.RESET_MEASURE;
+
       Tone.Transport.stop();
       this.updateSequence();
 
       // Redraw grid to clear playhead
-      this.drawGrid();
-      this.drawNotes();
+      this.drawNotes(this.playingMeasure);
 
       this.setState({ isPlaying: false });
     } else {
@@ -106,21 +118,36 @@ class Sequencer extends React.Component {
     this.props.onUpdateGrid(this.grid);
   }
 
-  tick(time, col) {
+  playColumn(time, col) {
     Tone.Draw.schedule(() => {
       // Prevent updating playhead after playback has been stopped
       if (this.state.isPlaying) this.updatePlayHead(col);
     });
 
+    const grid = this.props.song[this.playingMeasure];
     for (let row = 0; row < this.props.nRows; row += 1) {
-      if (this.grid[row][col].length > 0) {
+      if (grid[row][col].length > 0) {
         const note = this.instrument.notes[this.props.nRows - row - 1];
 
-        for (const instrumentId of this.grid[row][col]) {
+        for (const instrumentId of grid[row][col]) {
           instruments[instrumentId].triggerAttackRelease(note, this.subdivision, time);
         }
       }
     }
+  }
+
+  updatePlayingMeasure(measure) {
+    this.playingMeasure = measure;
+
+    this.drawNotes(measure);
+  }
+
+  tick(time, col) {
+    if (this.playingMeasure > this.props.currentMeasure) this.updatePlayingMeasure(0);
+
+    this.playColumn(time, col);
+
+    if (col === this.props.nCols - 1) this.updatePlayingMeasure(this.playingMeasure += 1);
   }
 
   drawGrid() {
@@ -148,20 +175,33 @@ class Sequencer extends React.Component {
     ctx.stroke();
   }
 
-  drawNotes() {
+  clearGrid(measure) {
     for (let row = 0; row < this.props.nRows; row += 1) {
       for (let col = 0; col < this.props.nCols; col += 1) {
-        if (this.grid[row][col].length > 0) this.fillCell(col, row);
+        this.fillCell(col, row, this.backgroundColor, measure);
+      }
+    }
+  }
+
+  drawNotes(measure) {
+    this.clearGrid(measure);
+
+    const grid = this.props.song[measure];
+
+    if (!grid) return;
+
+    for (let row = 0; row < this.props.nRows; row += 1) {
+      for (let col = 0; col < this.props.nCols; col += 1) {
+        if (grid[row][col].length > 0) this.fillCell(col, row, null, measure);
       }
     }
   }
 
   updatePlayHead(col) {
-    this.drawGrid();
-    this.drawNotes();
+    this.drawNotes(this.playingMeasure);
 
     for (let row = 0; row < this.props.nRows; row += 1) {
-      this.fillCell(col, row, this.playHeadColor);
+      this.fillCell(col, row, this.playHeadColor, this.playingMeasure);
     }
   }
 
@@ -172,14 +212,17 @@ class Sequencer extends React.Component {
     return { gridX, gridY };
   }
 
-  fillCell(x, y, color) {
+  fillCell(x, y, color, measure) {
     const canvas = this.canvasRef.current;
 
     if (!canvas) return;
 
     const context = canvas.getContext('2d');
 
-    const instrumentsInCell = this.grid[y][x];
+    const grid = this.props.song[measure];
+    if (!grid) return;
+
+    const instrumentsInCell = grid[y][x];
 
     const topLeft = { x: x * this.cellWidth, y: y * this.cellHeight };
 
@@ -200,7 +243,7 @@ class Sequencer extends React.Component {
         );
       }
     } else {
-      // When removing a note
+      // When removing a note or updating playhead
       context.fillStyle = color;
 
       context.fillRect(
@@ -217,7 +260,7 @@ class Sequencer extends React.Component {
 
     this.updateSequence();
 
-    this.fillCell(x, y);
+    this.fillCell(x, y, null, this.props.currentMeasure);
   }
 
   removeNote(x, y) {
@@ -225,7 +268,7 @@ class Sequencer extends React.Component {
 
     this.updateSequence();
 
-    this.fillCell(x, y, this.backgroundColor);
+    this.fillCell(x, y, this.backgroundColor, this.props.currentMeasure);
   }
 
   render() {
@@ -251,7 +294,8 @@ Sequencer.propTypes = {
   gridHeight: PropTypes.number,
   onUpdateGrid: PropTypes.func,
   instrumentId: PropTypes.string.isRequired,
-  grid: PropTypes.arrayOf(PropTypes.array),
+  song: PropTypes.arrayOf(PropTypes.array),
+  currentMeasure: PropTypes.number.isRequired,
 };
 
 Sequencer.defaultProps = {
@@ -260,7 +304,7 @@ Sequencer.defaultProps = {
   gridWidth: 1300,
   gridHeight: 600,
   onUpdateGrid: (() => {}),
-  grid: null,
+  song: null,
 };
 
 export default Sequencer;

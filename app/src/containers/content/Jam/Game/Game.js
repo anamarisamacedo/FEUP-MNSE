@@ -15,6 +15,7 @@ class Game extends React.Component {
 
     this.state = {
       isOwnTurn: false,
+      totalMeasures: 2,
       currentMeasure: 0,
       currentInstrument: 'testSynth',
       song: [],
@@ -74,7 +75,9 @@ class Game extends React.Component {
             <Sequencer
               instrumentId={this.state.currentInstrument}
               onUpdateGrid={this.handleGridUpdate}
-              grid={this.state.song[this.state.currentMeasure]}
+              song={this.state.song}
+              currentMeasure={this.state.currentMeasure}
+              totalMeasures={this.state.totalMeasures}
             />
           </Panel>
         </Grid>
