@@ -36,7 +36,7 @@ class Login extends React.Component {
             <img src={logo} alt="Logo" width="55" height="70" />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h3" styles={{ fontFamily: "Galada" }}>
+            <Typography variant="h4" styles={{ fontFamily: "Galada" }}>
               Jam It!
             </Typography>
           </Grid>
@@ -52,10 +52,10 @@ class Login extends React.Component {
               justifyContent: "center",
             }}
           >
-            <Grid item xs={12}>
+            <Grid item>
               <Avatar
                 alt="Remy Sharp"
-                src="https://i.pravatar.cc/300"
+                src="https://i.pravatar.cc/300" style={{width:'190px', height:'190px'}}
               />
             </Grid>
             <Grid item xs={12}>
