@@ -15,7 +15,6 @@ class Game extends React.Component {
 
     this.state = {
       isOwnTurn: false,
-      totalMeasures: 2,
       currentMeasure: 0,
       currentInstrument: 'testSynth',
       song: [],
@@ -28,6 +27,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     // this.setState({jamSettings: thi})
     const conn = this.props.connection;
 
@@ -40,7 +40,7 @@ class Game extends React.Component {
         this.setState({ isOwnTurn: true });
       } else this.setState({ isOwnTurn: false });
 
-      this.setState({ timeLeft: this.props.jamSettings.turnDuration });
+      this.setState({ timeLeft: this.props.settings.turnDuration });
       clearInterval(this.timeout);
       this.timeout = setInterval(this.updateTime.bind(this), 1000);
     });
@@ -85,7 +85,7 @@ class Game extends React.Component {
     return (
       <Grid container spacing={1} alignItems="stretch">
         <Grid item xs={12} style={{ height: '5vh' }}>
-          <TopBar jamTitle="JamTitle" />
+          <TopBar jamTitle={this.props.settings.title} />
         </Grid>
         <Grid item xs={10} style={{ height: '80vh' }}>
           <Panel style={{ justifyContent: 'space-evenly' }}>
@@ -94,7 +94,7 @@ class Game extends React.Component {
               onUpdateGrid={this.handleGridUpdate}
               song={this.state.song}
               currentMeasure={this.state.currentMeasure}
-              totalMeasures={this.state.totalMeasures}
+              totalMeasures={this.props.settings.measures}
             />
           </Panel>
         </Grid>
@@ -104,7 +104,11 @@ class Game extends React.Component {
           </Panel>
         </Grid>
         <Grid item xs={12} style={{ height: '5vh' }}>
-          <BottomBar timeLeft={this.state.timeLeft} />
+          <BottomBar
+            currentInstrument={this.state.currentInstrument}
+            bpm={this.props.settings.bpm}
+            timeLeft={this.state.timeLeft}
+          />
         </Grid>
       </Grid>
     );
@@ -114,6 +118,23 @@ class Game extends React.Component {
 Game.propTypes = {
   username: PropTypes.string.isRequired,
   connection: PropTypes.instanceOf(Connection).isRequired,
+  settings: PropTypes.shape({
+    title: PropTypes.string,
+    bpm: PropTypes.number,
+    measures: PropTypes.number,
+    turnDuration: PropTypes.number,
+    instruments: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
+
+Game.defaultProps = {
+  settings: {
+    title: '',
+    bpm: 80,
+    measures: 1,
+    turnDuration: 60,
+    instruments: [],
+  },
 };
 
 export default withAppContext(Game);
