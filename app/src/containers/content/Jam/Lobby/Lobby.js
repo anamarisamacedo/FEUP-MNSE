@@ -1,17 +1,32 @@
-import { useContext } from 'react';
-import ConnectionContext from '../../../../utils/ConnectionContext';
-import UserContext from '../../../../utils/UserContext';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Connection from '../../../../utils/Connection';
+import { withAppContext } from '../../../../utils/AppContext';
 
-function Lobby() {
-  const conn = useContext(ConnectionContext);
-  const username = useContext(UserContext);
+class Lobby extends React.Component {
+  constructor(props) {
+    super(props);
 
-  console.log(conn);
-  console.log(username);
+    this.state = {
+      currentPlayers: [],
+    };
+  }
 
-  return (
-    <span>Lobby</span>
-  );
+  componentDidMount() {
+    console.log(this.props.connection);
+    console.log(this.props.username);
+  }
+
+  render() {
+    return (
+      <span>Lobby</span>
+    );
+  }
 }
 
-export default Lobby;
+Lobby.propTypes = {
+  username: PropTypes.string.isRequired,
+  connection: PropTypes.instanceOf(Connection).isRequired,
+};
+
+export default withAppContext(Lobby);

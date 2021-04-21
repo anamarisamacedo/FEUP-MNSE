@@ -1,11 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Panel from '../../../../components/Panel/Panel';
 import Sequencer from './Sequencer/Sequencer';
 import TopBar from './TopBar/TopBar';
 import Sidebar from './Sidebar/Sidebar';
 import BottomBar from './BottomBar/BottomBar';
-import ConnectionContext from '../../../../utils/ConnectionContext';
+import Connection from '../../../../utils/Connection';
+import { withAppContext } from '../../../../utils/AppContext';
 
 class Game extends React.Component {
   constructor(props) {
@@ -22,14 +24,14 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const conn = this.context;
+    const conn = this.props.connection;
 
     conn.socket.on('next-turn', (turn) => {
       console.log('next-turn');
       console.log(turn);
       this.setState({ currentMeasure: turn.measure, currentInstrument: turn.instrument });
 
-      if (turn.player === 'user1') {
+      if (turn.player === this.props.username) {
         this.setState({ isOwnTurn: true });
       } else this.setState({ isOwnTurn: false });
     });
@@ -37,7 +39,7 @@ class Game extends React.Component {
     conn.socket.on('req-song-data', (username) => {
       console.log(`received req-song-data ${username}`);
 
-      if (username === 'user1') {
+      if (username === this.props.username) {
         console.log('sending song data');
         console.log(this.state.song);
         conn.socket.emit('song-data', this.state.song);
@@ -72,6 +74,7 @@ class Game extends React.Component {
             <Sequencer
               instrumentId={this.state.currentInstrument}
               onUpdateGrid={this.handleGridUpdate}
+              grid={this.state.song[this.state.currentMeasure]}
             />
           </Panel>
         </Grid>
@@ -88,6 +91,9 @@ class Game extends React.Component {
   }
 }
 
-Game.contextType = ConnectionContext;
+Game.propTypes = {
+  username: PropTypes.string.isRequired,
+  connection: PropTypes.instanceOf(Connection).isRequired,
+};
 
-export default Game;
+export default withAppContext(Game);
