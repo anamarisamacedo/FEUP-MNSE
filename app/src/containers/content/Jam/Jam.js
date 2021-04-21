@@ -13,6 +13,7 @@ class Jam extends React.Component {
       hasStarted: false,
       connection: null,
       username: null,
+      jamSettings: { title: 'Jam 1', bpm: 80, turnDuration: 5 },
     };
 
     this.handleSetUsername = this.handleSetUsername.bind(this);
@@ -46,7 +47,7 @@ class Jam extends React.Component {
     if (this.state.username) {
       return (
         <AppContextProvider username={this.state.username} connection={this.state.connection}>
-          { this.state.hasStarted ? <Game /> : <Lobby /> }
+          { this.state.hasStarted ? <Game jamSettings={this.state.jamSettings} /> : <Lobby /> }
         </AppContextProvider>
       );
     }

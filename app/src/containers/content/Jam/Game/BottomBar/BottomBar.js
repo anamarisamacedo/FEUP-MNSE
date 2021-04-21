@@ -1,7 +1,9 @@
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import { formatSeconds } from '../../../../../utils/utils';
 
-function BottomBar() {
+function BottomBar(props) {
   return (
     <Grid container spacing={1}>
 
@@ -31,14 +33,18 @@ function BottomBar() {
         </Grid>
       </Grid>
 
-      <Grid item container xs={3} justify="flex-end">
-        <Typography variant="h2" style={{ fontWeight: 'bold' }}>
-          1:23
+      <Grid item container xs={6} justify="flex-end">
+        <Typography align="left" variant="h2" style={{ fontWeight: 'bold', width: '5em' }}>
+          { props.timeLeft ? formatSeconds(props.timeLeft) : '00:00' }
         </Typography>
       </Grid>
 
     </Grid>
   );
 }
+
+BottomBar.propTypes = {
+  timeLeft: PropTypes.number.isRequired,
+};
 
 export default BottomBar;

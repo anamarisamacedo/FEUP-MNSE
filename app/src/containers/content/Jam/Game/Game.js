@@ -19,12 +19,16 @@ class Game extends React.Component {
       currentMeasure: 0,
       currentInstrument: 'testSynth',
       song: [],
+      timeLeft: 0,
     };
+
+    this.timeout = null;
 
     this.handleGridUpdate = this.handleGridUpdate.bind(this);
   }
 
   componentDidMount() {
+    // this.setState({jamSettings: thi})
     const conn = this.props.connection;
 
     conn.socket.on('next-turn', (turn) => {
@@ -35,6 +39,10 @@ class Game extends React.Component {
       if (turn.player === this.props.username) {
         this.setState({ isOwnTurn: true });
       } else this.setState({ isOwnTurn: false });
+
+      this.setState({ timeLeft: this.props.jamSettings.turnDuration });
+      clearInterval(this.timeout);
+      this.timeout = setInterval(this.updateTime.bind(this), 1000);
     });
 
     conn.socket.on('req-song-data', (username) => {
@@ -54,12 +62,21 @@ class Game extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timeout);
+  }
+
   handleGridUpdate(grid) {
     const { song } = this.state;
 
     song[this.state.currentMeasure] = grid;
 
     this.setState({ song });
+  }
+
+  updateTime() {
+    console.log('timeLeft ' + this.state.timeLeft);
+    if (this.state.timeLeft > 0) this.setState((state) => ({ timeLeft: state.timeLeft - 1 }));
   }
 
   render() {
@@ -87,7 +104,7 @@ class Game extends React.Component {
           </Panel>
         </Grid>
         <Grid item xs={12} style={{ height: '5vh' }}>
-          <BottomBar />
+          <BottomBar timeLeft={this.state.timeLeft} />
         </Grid>
       </Grid>
     );
