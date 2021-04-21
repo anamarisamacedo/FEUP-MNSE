@@ -3,8 +3,12 @@
         "description": "Home",
         "link": "/"
     },
-    "jam": {
-        "description": "Jam",
+    "createJam": {
+        "description": "Create Jam",
         "link": "/jam"
+    },
+    "joinJam": {
+        "description": "Join Jam",
+        "link": "/jam/:id"
     }
 }

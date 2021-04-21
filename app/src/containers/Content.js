@@ -12,7 +12,8 @@ function Content() {
   return (
     <Switch>
       { createRoute('/', Home) }
-      { createRoute(NavLinks.jam.link, Jam) }
+      { createRoute(NavLinks.joinJam.link, Jam) }
+      { createRoute(NavLinks.createJam.link, Jam) }
     </Switch>
   );
 }
