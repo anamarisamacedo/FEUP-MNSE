@@ -27,15 +27,19 @@ class Lobby extends React.Component {
       },
       copied: false,
       copyUrl: "",
+      leader: false,
     };
 
     this.handlePlay = this.handlePlay.bind(this);
     this.handleSetSettings = this.handleSetSettings.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const conn = this.props.connection;
     this.setState({ copyUrl: `http://localhost:3000/jam/${conn.jamId}` });
+    if (this.props.connection.username === this.props.leader) {
+      this.setState({ leader: true });
+    }
   }
 
   handleSetSettings(title, bpm, measures, turnDuration, instruments) {
@@ -83,12 +87,7 @@ class Lobby extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          textAlign="center"
-        >
+        <Grid container spacing={1} direction="row" textAlign="center">
           <Grid item xs sm={6} styles={{ textAlign: "center" }}>
             <Panel
               className={styles.Panel}
@@ -100,64 +99,85 @@ class Lobby extends React.Component {
           <Grid item xs sm={6}>
             <Grid container spacing={1} direction="column" alignItems="center">
               <Grid item xs>
-                <Panel
-                  className={styles.Panel}
-                  style={{
-                    height: "60vh",
-                    width: "100vh",
-                    textAlign: "center",
-                  }}
-                >
-                  <Settings onSetSettings={this.handleSetSettings} />
-                </Panel>
+                {this.state.leader ? (
+                  <Panel
+                    className={styles.Panel}
+                    style={{
+                      height: "60vh",
+                      width: "100vh",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Settings
+                      onSetSettings={this.handleSetSettings}
+                      leader={this.state.leader}
+                    />
+                  </Panel>
+                ) : (
+                  <Panel
+                    className={styles.Panel}
+                    style={{
+                      height: "70vh",
+                      width: "100vh",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Settings
+                      onSetSettings={this.handleSetSettings}
+                      leader={this.state.leader}
+                    />
+                  </Panel>
+                )}
               </Grid>
-              <Grid item xs>
-                <Grid
-                  container
-                  spacing={10}
-                  direction="row"
-                  alignItems="center"
-                >
-                  <Grid item xs sm={6}>
-                    <Grid
-                      container
-                      spacing={1}
-                      direction="column"
-                      alignItems="center"
-                    >
-                      <Grid item xs>
-                        <CopyToClipboard
-                          text={this.state.copyUrl}
-                          onCopy={() => this.setState({ copied: true })}
-                        >
-                          <Button
-                            variant="contained"
-                            endIcon={
-                              <PlayArrowOutlinedIcon color="secondary" />
-                            }
+              {this.state.leader ? (
+                <Grid item xs>
+                  <Grid
+                    container
+                    spacing={10}
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <Grid item xs sm={6}>
+                      <Grid
+                        container
+                        spacing={1}
+                        direction="column"
+                        alignItems="center"
+                      >
+                        <Grid item xs>
+                          <CopyToClipboard
+                            text={this.state.copyUrl}
+                            onCopy={() => this.setState({ copied: true })}
                           >
-                            Invite
-                          </Button>
-                        </CopyToClipboard>
-                      </Grid>
-                      <Grid item xs>
-                        {this.state.copied ? (
-                          <span style={{ color: "white" }}>Link copied!</span>
-                        ) : null}
+                            <Button
+                              variant="contained"
+                              endIcon={
+                                <PlayArrowOutlinedIcon color="secondary" />
+                              }
+                            >
+                              Invite
+                            </Button>
+                          </CopyToClipboard>
+                        </Grid>
+                        <Grid item xs>
+                          {this.state.copied ? (
+                            <span style={{ color: "white" }}>Link copied!</span>
+                          ) : null}
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid item xs sm={6}>
-                    <Button
-                      variant="contained"
-                      endIcon={<PlayArrowOutlinedIcon color="secondary" />}
-                      onClick={this.handlePlay}
-                    >
-                      Play
-                    </Button>
+                    <Grid item xs sm={6}>
+                      <Button
+                        variant="contained"
+                        endIcon={<PlayArrowOutlinedIcon color="secondary" />}
+                        onClick={this.handlePlay}
+                      >
+                        Play
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
+              ) : null}
             </Grid>
           </Grid>
         </Grid>
@@ -170,6 +190,7 @@ Lobby.propTypes = {
   connection: PropTypes.instanceOf(Connection).isRequired,
   onPlay: PropTypes.func,
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
+  leader: PropTypes.string.isRequired,
 };
 
 Lobby.defaultProps = {

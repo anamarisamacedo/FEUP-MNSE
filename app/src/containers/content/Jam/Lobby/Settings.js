@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import Slider from '@material-ui/core/Slider';
-import { withStyles } from '@material-ui/core/styles';
+import React from "react";
+import PropTypes from "prop-types";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import ListItemText from "@material-ui/core/ListItemText";
+import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
+import Slider from "@material-ui/core/Slider";
+import { withStyles } from "@material-ui/core/styles";
 
-const instruments = ['Synth1', 'Synth2', 'Synth3'];
+const instruments = ["Synth1111", "Synth2", "Synth3"];
 const MenuProps = {
   PaperProps: {
     style: {
@@ -24,21 +24,22 @@ const MenuProps = {
 
 const PrettoSlider = withStyles({
   root: {
-    color: '#A7C6DA',
+    color: "#A7C6DA",
     height: 7,
+    width: "220px",
   },
   thumb: {
     height: 20,
     width: 20,
-    backgroundColor: '#F4F2F3',
-    border: '2px solid currentColor',
-    borderColor: '#F4F2F3',
+    backgroundColor: "#F4F2F3",
+    border: "2px solid currentColor",
+    borderColor: "#F4F2F3",
     marginTop: -7,
     marginLeft: -12,
   },
   active: {},
   valueLabel: {
-    left: 'calc(-50% + 4px)',
+    left: "calc(-50% + 4px)",
   },
   track: {
     height: 7,
@@ -47,7 +48,7 @@ const PrettoSlider = withStyles({
   rail: {
     height: 7,
     borderRadius: 4,
-    backgroundColor: '#F4F2F3',
+    backgroundColor: "#F4F2F3",
   },
 })(Slider);
 
@@ -56,11 +57,13 @@ class Settings extends React.Component {
     super(props);
 
     this.state = {
-      title: '',
+      title: "",
       bpm: 100,
       measures: 5,
       turnDuration: 60,
       instruments: [],
+      leader: this.props.leader,
+      spacing: 1,
     };
 
     this.handleChangeJamTitle = this.handleChangeJamTitle.bind(this);
@@ -68,6 +71,13 @@ class Settings extends React.Component {
     this.handleChangeInstruments = this.handleChangeInstruments.bind(this);
     this.handleChangeBPM = this.handleChangeBPM.bind(this);
     this.handleChangeMeasures = this.handleChangeMeasures.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ leader: this.props.leader });
+    if (this.props.leader === false) {
+      this.setState({ spacing: 3 });
+    }
   }
 
   handleChangeJamTitle(event) {
@@ -128,10 +138,14 @@ class Settings extends React.Component {
   render() {
     return (
       <div>
-        <Typography variant="h4" style={{ marginTop: '10px' }}>
+        <Typography variant="h4" style={{ marginTop: "10px" }}>
           Settings
         </Typography>
-        <Grid container spacing={1} style={{ marginTop: '18px' }}>
+        <Grid
+          container
+          spacing={this.state.spacing}
+          style={{ marginTop: "18px" }}
+        >
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Jam Title</Typography>
           </Grid>
@@ -141,23 +155,28 @@ class Settings extends React.Component {
               id="standard-required"
               value={this.state.jamTitle}
               onChange={this.handleChangeJamTitle}
+              disabled={!this.state.leader}
             />
           </Grid>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Turn Duration (sec)</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              id="standard-number"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              min={30}
-              max={180}
-              setp={10}
-              onChange={this.handleChangeTurnTime}
-            />
+            {this.state.leader ? (
+              <TextField
+                id="standard-number"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                min={30}
+                max={180}
+                setp={10}
+                onChange={this.handleChangeTurnTime}
+              />
+            ) : (
+              <TextField value={this.state.turnDuration} disabled />
+            )}
           </Grid>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Instruments</Typography>
@@ -173,15 +192,23 @@ class Settings extends React.Component {
                 multiple
                 value={this.state.instruments}
                 onChange={this.handleChangeInstruments}
-                renderValue={(selected) => selected.join(', ')}
+                renderValue={(selected) => selected.join(", ")}
                 MenuProps={MenuProps}
+                style={{ width: "220px" }}
               >
                 {instruments.map((instrument) => (
                   <MenuItem key={instrument} value={instrument}>
-                    <Checkbox
-                      checked={this.state.instruments.indexOf(instrument) > -1}
+                    {this.state.leader ? (
+                      <Checkbox
+                        checked={
+                          this.state.instruments.indexOf(instrument) > -1
+                        }
+                      />
+                    ) : null}
+                    <ListItemText
+                      primary={instrument}
+                      style={{ color: "#06070E" }}
                     />
-                    <ListItemText primary={instrument} color="text" />
                   </MenuItem>
                 ))}
               </Select>
@@ -198,22 +225,28 @@ class Settings extends React.Component {
               onChange={this.handleChangeBPM}
               min={50}
               max={250}
+              step={10}
+              disabled={!this.state.leader}
             />
           </Grid>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Measures</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              id="standard-number"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              min={1}
-              max={10}
-              onChange={this.handleChangeMeasures}
-            />
+            {this.state.leader ? (
+              <TextField
+                id="standard-number"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                min={1}
+                max={10}
+                onChange={this.handleChangeMeasures}
+              />
+            ) : (
+              <TextField value={this.state.measures} disabled />
+            )}
           </Grid>
         </Grid>
       </div>
@@ -230,12 +263,13 @@ Settings.propTypes = {
     turnDuration: PropTypes.number,
     instruments: PropTypes.arrayOf(PropTypes.string),
   }),
+  leader: PropTypes.string.isRequired,
 };
 
 Settings.defaultProps = {
   onSetSettings: () => {},
   settings: {
-    jamTitle: '',
+    jamTitle: "",
     bpm: 80,
     measures: 1,
     turnDuration: 60,
