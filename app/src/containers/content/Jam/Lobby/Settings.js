@@ -129,9 +129,9 @@ class Settings extends React.Component {
     return (
       <div>
         <Typography variant="h4" style={{ marginTop: '10px' }}>
-          How To Play
+          Settings
         </Typography>
-        <Grid container spacing={2} style={{ marginTop: '18px' }}>
+        <Grid container spacing={1} style={{ marginTop: '18px' }}>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Jam Title</Typography>
           </Grid>
