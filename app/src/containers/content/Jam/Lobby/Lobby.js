@@ -17,28 +17,28 @@ class Lobby extends React.Component {
     super(props);
 
     this.state = {
-      jamTitle: "",
-      turnDuration: 60,
-      instruments: [],
-      bpm: 100,
+      settings: {
+        title: "",
+        bpm: 100,
+        measures: 5,
+        turnDuration: 60,
+        instruments: [],
+      },
     };
 
     this.handlePlay = this.handlePlay.bind(this);
     this.handleSetSettings = this.handleSetSettings.bind(this);
   }
 
-  handleSetSettings(jamTitle, turnDuration, instruments, bpm) {
-    this.setState({ jamTitle, turnDuration, instruments, bpm });
+  handleSetSettings(title, bpm, measures, turnDuration, instruments) {
+    this.setState({
+      settings: { title, bpm, measures, turnDuration, instruments },
+    });
+    console.log(this.state.settings);
   }
 
   handlePlay() {
-    this.props.onPlay(
-      true,
-      this.state.jamTitle,
-      this.state.turnDuration,
-      this.state.instruments,
-      this.state.bpm
-    );
+    this.props.onPlay(true, this.state.settings);
   }
 
   render() {
@@ -78,9 +78,9 @@ class Lobby extends React.Component {
           <Grid item xs sm={6}>
             <Panel
               className={styles.Panel}
-              style={{ height: "70vh", width: "100vh", textAlign: "center" }}
+              style={{ height: "65vh", width: "100vh", textAlign: "center" }}
             >
-              <Settings onsetSettings={this.handleSetSettings} />
+              <Settings onSetSettings={this.handleSetSettings} />
             </Panel>
           </Grid>
           <Grid item cs sm={6} />

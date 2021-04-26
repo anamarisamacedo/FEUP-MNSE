@@ -18,9 +18,10 @@ class Jam extends React.Component {
       username: null,
       settings: {
         title: "Jam 1",
-        bpm: 80,
-        measures: 2,
-        turnDuration: 5,
+        bpm: 100,
+        measures: 5,
+        turnDuration: 60,
+        instruments: [],
       },
       users: [],
     };
@@ -42,11 +43,9 @@ class Jam extends React.Component {
     this.setState({ connection, username });
   }
 
-  async handlePlay(hasStarted, jamTitle, turnDuration, instruments, bpm) {
-    const measures = 2;
-    this.setState({ settings: { jamTitle, bpm, measures, turnDuration } });
-    console.log(this.state.settings)
-    this.setState({ hasStarted });
+  async handlePlay(hasStarted, settings) {
+    console.log(settings);
+    this.setState({ hasStarted, settings });
   }
 
   async setupConnection(username) {
