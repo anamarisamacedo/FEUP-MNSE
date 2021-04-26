@@ -105,9 +105,9 @@ class Settings extends React.Component {
     );
   }
 
-  handleChangeBPM(event) {
-    this.setState({ bpm: event.target.value });
-    console.log(event.target.value);
+  handleChangeBPM(event, newValue) {
+    this.setState({ bpm: newValue });
+    console.log(newValue);
     this.props.onSetSettings(
       this.state.title,
       this.state.bpm,
