@@ -27,7 +27,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
+
     // this.setState({jamSettings: thi})
     const conn = this.props.connection;
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Lobby from './Lobby/Lobby';
-import Game from './Game/Game';
-import Login from './Login/Login';
-import Connection from '../../../utils/Connection';
-import { AppContextProvider } from '../../../utils/AppContext';
-import jamService from '../../../services/jamService';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import Lobby from "./Lobby/Lobby";
+import Game from "./Game/Game";
+import Login from "./Login/Login";
+import Connection from "../../../utils/Connection";
+import { AppContextProvider } from "../../../utils/AppContext";
+import jamService from "../../../services/jamService";
 
 class Jam extends React.Component {
   constructor(props) {
@@ -17,14 +17,16 @@ class Jam extends React.Component {
       connection: null,
       username: null,
       settings: {
-        title: 'Jam 1',
+        title: "Jam 1",
         bpm: 80,
         measures: 2,
         turnDuration: 5,
       },
+      users: [],
     };
 
     this.handleSetUsername = this.handleSetUsername.bind(this);
+    this.handlePlay = this.handlePlay.bind(this);
   }
 
   componentDidMount() {
@@ -40,13 +42,20 @@ class Jam extends React.Component {
     this.setState({ connection, username });
   }
 
+  async handlePlay(hasStarted, jamTitle, turnDuration, instruments, bpm) {
+    const measures = 2;
+    this.setState({ settings: { jamTitle, bpm, measures, turnDuration } });
+    console.log(this.state.settings)
+    this.setState({ hasStarted });
+  }
+
   async setupConnection(username) {
     let { id } = this.props.match.params;
 
     if (!id) {
       // Create default jam
       const jam = await jamService.createJam(username, this.state.settings);
-      console.log(jam);
+      this.setState({ users: jam.users });
 
       id = jam.id;
     }
@@ -55,8 +64,8 @@ class Jam extends React.Component {
     // The line below can be uncommented for testing purposes
     // this.setState({ hasStarted: true });
 
-    connection.socket.on('start-jam', () => {
-      console.log('received start-jam');
+    connection.socket.on("start-jam", () => {
+      console.log("received start-jam");
 
       this.setState({ hasStarted: true });
     });
@@ -67,11 +76,19 @@ class Jam extends React.Component {
   render() {
     if (this.state.username) {
       return (
-        <AppContextProvider username={this.state.username} connection={this.state.connection}>
-          {
-            this.state.hasStarted ? <Game settings={this.state.settings} />
-              : <Lobby leader={this.props.match.params.id ? null : this.state.username} />
-          }
+        <AppContextProvider
+          username={this.state.username}
+          connection={this.state.connection}
+        >
+          {this.state.hasStarted ? (
+            <Game settings={this.state.settings} />
+          ) : (
+            <Lobby
+              leader={this.props.match.params.id ? null : this.state.username}
+              users={this.state.users}
+              onPlay={this.handlePlay}
+            />
+          )}
         </AppContextProvider>
       );
     }

@@ -11,11 +11,24 @@ class JamManager {
     this.jams = [];
     this.connectedClients = [];
 
-    this.socket = io((server, {
-      cors: {
-        origin: 'http://localhost:3000',
-      },
-    }));
+    this.socket = io(
+      (server,
+      {
+        cors: {
+          origin: 'http://localhost:3000',
+        },
+      }),
+    );
+
+    const jam = new Jam('user1', {
+      measures: 2,
+      turnDuration: 5,
+      instruments: ['testSynth', 'testSynth2', 'testSynth3'],
+    });
+    jam.addUser('user2');
+    this.addJam(jam);
+
+    this.jams.push(jam);
   }
 
   startServer() {
@@ -60,9 +73,7 @@ class JamManager {
   }
 
   addJam(jam) {
-    const id = nanoid(10);
-    jam.giveId(id);
-
+    jam.giveId('jam1');
     this.jams.push(jam);
   }
 
@@ -71,15 +82,20 @@ class JamManager {
 
     if (index < 0) throw new JamNotFoundError();
 
-    if (this.jams[index].status === Jam.Statuses.OVER) throw new JamAlreadyOverError();
+    if (this.jams[index].status === Jam.Statuses.OVER) { throw new JamAlreadyOverError(); }
 
     this.jams[index].addUser(username);
+    
+    const users = this.listUsersInJam(jamId);
+    this.socket.to(jamId).emit('current-users', users);
   }
 
   removeUserFromJam(username, jamId) {
     const index = this.jams.findIndex((jam) => jam.id === jamId);
 
     this.jams[index].removeUser(username);
+    const users = this.listUsersInJam(jamId);
+    this.socket.to(jamId).emit('current-users', users);
   }
 
   startJam(jamId) {
@@ -107,7 +123,6 @@ class JamManager {
     const index = this.jams.findIndex((jam) => jam.id === jamId);
 
     if (index < 0) return [];
-
     return this.jams[index].users;
   }
 
@@ -139,7 +154,9 @@ class JamManager {
   }
 
   findSocketByUser(username) {
-    return this.connectedClients.find((socket) => socket.handshake.query.username === username);
+    return this.connectedClients.find(
+      (socket) => socket.handshake.query.username === username,
+    );
   }
 }
 

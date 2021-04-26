@@ -33,7 +33,7 @@ class Login extends React.Component {
       <div>
         <Grid container spacing={1} style={{ textAlign: 'center' }}>
           <Grid item xs={12} style={{ marginTop: '40px' }}>
-            <img src={logo} alt="Logo" width='auto' height="60" />
+            <img src={logo} alt="Logo" width="auto" height="60" />
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h4" styles={{ fontFamily: 'Galada' }}>
@@ -77,7 +77,7 @@ class Login extends React.Component {
             <Grid item xs={12}>
               <Button
                 variant="contained"
-                endIcon={<PlayArrowOutlinedIcon color="#A7C6DA" />}
+                endIcon={<PlayArrowOutlinedIcon color="secondary" />}
                 onClick={this.handleConfirm}
               >
                 Confirm
