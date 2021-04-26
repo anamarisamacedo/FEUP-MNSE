@@ -1,20 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withAppContext } from "../../../../utils/AppContext";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import Slider from "@material-ui/core/Slider";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import ListItemText from '@material-ui/core/ListItemText';
+import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import Slider from '@material-ui/core/Slider';
+import { withStyles } from '@material-ui/core/styles';
 
-const instruments = ["Synth1", "Synth2", "Synth3"];
+const instruments = ['Synth1', 'Synth2', 'Synth3'];
 const MenuProps = {
   PaperProps: {
     style: {
@@ -26,21 +24,21 @@ const MenuProps = {
 
 const PrettoSlider = withStyles({
   root: {
-    color: "#A7C6DA",
+    color: '#A7C6DA',
     height: 7,
   },
   thumb: {
     height: 20,
     width: 20,
-    backgroundColor: "#F4F2F3",
-    border: "2px solid currentColor",
-    borderColor: "#F4F2F3",
+    backgroundColor: '#F4F2F3',
+    border: '2px solid currentColor',
+    borderColor: '#F4F2F3',
     marginTop: -7,
     marginLeft: -12,
   },
   active: {},
   valueLabel: {
-    left: "calc(-50% + 4px)",
+    left: 'calc(-50% + 4px)',
   },
   track: {
     height: 7,
@@ -49,7 +47,7 @@ const PrettoSlider = withStyles({
   rail: {
     height: 7,
     borderRadius: 4,
-    backgroundColor: "#F4F2F3",
+    backgroundColor: '#F4F2F3',
   },
 })(Slider);
 
@@ -58,7 +56,7 @@ class Settings extends React.Component {
     super(props);
 
     this.state = {
-      title: "",
+      title: '',
       bpm: 100,
       measures: 5,
       turnDuration: 60,
@@ -107,7 +105,6 @@ class Settings extends React.Component {
 
   handleChangeBPM(event, newValue) {
     this.setState({ bpm: newValue });
-    console.log(newValue);
     this.props.onSetSettings(
       this.state.title,
       this.state.bpm,
@@ -131,10 +128,10 @@ class Settings extends React.Component {
   render() {
     return (
       <div>
-        <Typography variant="h4" style={{ marginTop: "10px" }}>
+        <Typography variant="h4" style={{ marginTop: '10px' }}>
           How To Play
         </Typography>
-        <Grid container spacing={2} style={{ marginTop: "18px" }}>
+        <Grid container spacing={2} style={{ marginTop: '18px' }}>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Jam Title</Typography>
           </Grid>
@@ -176,7 +173,7 @@ class Settings extends React.Component {
                 multiple
                 value={this.state.instruments}
                 onChange={this.handleChangeInstruments}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected) => selected.join(', ')}
                 MenuProps={MenuProps}
               >
                 {instruments.map((instrument) => (
@@ -238,7 +235,7 @@ Settings.propTypes = {
 Settings.defaultProps = {
   onSetSettings: () => {},
   settings: {
-    jamTitle: "",
+    jamTitle: '',
     bpm: 80,
     measures: 1,
     turnDuration: 60,
