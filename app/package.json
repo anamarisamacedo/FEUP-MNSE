@@ -9,6 +9,7 @@
     "@material-ui/icons": "^4.11.2",
     "@react-navigation/native": "^5.9.4",
     "axios": "^0.21.1",
+    "debounce": "^1.2.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-avatar-edit": "^1.0.0",

@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import debounce from 'debounce';
 import { withAppContext } from '../../../../utils/AppContext';
 import Connection from '../../../../utils/Connection';
 import Panel from '../../../../components/Panel/Panel';
@@ -12,6 +13,7 @@ import logo from '../../../../logo.png';
 import styles from './Lobby.module.css';
 import Settings from './Settings';
 import Players from './Players';
+import jamService from '../../../../services/jamService';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -35,6 +37,8 @@ class Lobby extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ settings: this.props.settings });
+
     const conn = this.props.connection;
     this.setState({ copyUrl: `http://localhost:3000/jam/${conn.jamId}` });
     if (this.props.connection.username === this.props.leader) {
@@ -42,16 +46,17 @@ class Lobby extends React.Component {
     }
   }
 
-  handleSetSettings(title, bpm, measures, turnDuration, instruments) {
-    this.setState({
-      settings: {
-        title,
-        bpm,
-        measures,
-        turnDuration,
-        instruments,
-      },
-    });
+  async handleSetSettings(title, bpm, measures, turnDuration, instruments) {
+    const settings = {
+      title,
+      bpm,
+      measures,
+      turnDuration,
+      instruments,
+    };
+
+    await jamService.updateJamSettings(this.props.connection.jamId, settings);
+    this.setState({ settings });
   }
 
   handlePlay() {
@@ -109,7 +114,8 @@ class Lobby extends React.Component {
                     }}
                   >
                     <Settings
-                      onSetSettings={this.handleSetSettings}
+                      settings={this.props.settings}
+                      onSetSettings={debounce(this.handleSetSettings, 400)}
                       leader={this.state.leader}
                     />
                   </Panel>
@@ -123,6 +129,7 @@ class Lobby extends React.Component {
                     }}
                   >
                     <Settings
+                      settings={this.props.settings}
                       onSetSettings={this.handleSetSettings}
                       leader={this.state.leader}
                     />
@@ -191,10 +198,24 @@ Lobby.propTypes = {
   onPlay: PropTypes.func,
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
   leader: PropTypes.string.isRequired,
+  settings: PropTypes.shape({
+    title: PropTypes.string,
+    bpm: PropTypes.number,
+    measures: PropTypes.number,
+    turnDuration: PropTypes.number,
+    instruments: PropTypes.arrayOf(PropTypes.string),
+  }),
 };
 
 Lobby.defaultProps = {
   onPlay: () => {},
+  settings: {
+    title: '',
+    bpm: 80,
+    measures: 1,
+    turnDuration: 60,
+    instruments: [],
+  },
 };
 
 export default withAppContext(Lobby);

@@ -50,7 +50,6 @@ class Jam extends React.Component {
   }
 
   async handlePlay(hasStarted, settings) {
-    await jamService.updateJamSettings(this.state.connection.jamId, settings);
     await jamService.startJam(this.state.connection.jamId);
     this.setState({ hasStarted, settings });
   }
@@ -93,6 +92,7 @@ class Jam extends React.Component {
               leader={this.props.match.params.id ? null : this.state.username}
               users={this.state.users}
               onPlay={this.handlePlay}
+              settings={this.state.settings}
             />
           )}
         </AppContextProvider>

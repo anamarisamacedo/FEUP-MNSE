@@ -84,6 +84,13 @@ class Settings extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({
+      title: this.props.settings.jamTitle,
+      bpm: this.props.settings.bpm,
+      measures: this.props.settings.measures,
+      turnDuration: this.props.settings.turnDuration,
+      instruments: this.props.settings.instruments,
+    });
   }
 
   handleChangeJamTitle(event) {
