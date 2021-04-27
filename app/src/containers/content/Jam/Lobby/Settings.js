@@ -11,8 +11,20 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/core/styles';
+import instruments from '../Game/Sequencer/instruments';
 
-const instruments = ['Synth1111', 'Synth2', 'Synth3'];
+function mapInstruments(instr) {
+  const instrumentArr = [];
+
+  for (const i of Object.values(instr)) {
+    instrumentArr.push(i);
+  }
+
+  return instrumentArr;
+}
+
+const instrumentList = mapInstruments(instruments);
+
 const MenuProps = {
   PaperProps: {
     style: {
@@ -75,9 +87,11 @@ class Settings extends React.Component {
   }
 
   handleChangeJamTitle(event) {
-    this.setState({ title: event.target.value });
+    const title = event.target.value;
+
+    this.setState({ title });
     this.props.onSetSettings(
-      this.state.title,
+      title,
       this.state.bpm,
       this.state.measures,
       this.state.turnDuration,
@@ -86,24 +100,26 @@ class Settings extends React.Component {
   }
 
   handleChangeTurnTime(event) {
-    this.setState({ turnDuration: parseInt(event.target.value) });
+    const turnDuration = parseInt(event.target.value);
+    this.setState({ turnDuration });
     this.props.onSetSettings(
       this.state.title,
       this.state.bpm,
       this.state.measures,
-      this.state.turnDuration,
+      turnDuration,
       this.state.instruments,
     );
   }
 
   handleChangeInstruments(event) {
-    this.setState({ instruments: event.target.value });
+    const selectedInstruments = event.target.value;
+    this.setState({ instruments: selectedInstruments });
     this.props.onSetSettings(
       this.state.title,
       this.state.bpm,
       this.state.measures,
       this.state.turnDuration,
-      this.state.instruments,
+      selectedInstruments,
     );
   }
 
@@ -111,7 +127,7 @@ class Settings extends React.Component {
     this.setState({ bpm: newValue });
     this.props.onSetSettings(
       this.state.title,
-      this.state.bpm,
+      newValue,
       this.state.measures,
       this.state.turnDuration,
       this.state.instruments,
@@ -119,11 +135,12 @@ class Settings extends React.Component {
   }
 
   handleChangeMeasures(event) {
-    this.setState({ measures: parseInt(event.target.value) });
+    const measures = parseInt(event.target.value);
+    this.setState({ measures });
     this.props.onSetSettings(
       this.state.title,
       this.state.bpm,
-      this.state.measures,
+      measures,
       this.state.turnDuration,
       this.state.instruments,
     );
@@ -190,17 +207,17 @@ class Settings extends React.Component {
                 MenuProps={MenuProps}
                 style={{ width: '220px' }}
               >
-                {instruments.map((instrument) => (
-                  <MenuItem key={instrument} value={instrument}>
+                {instrumentList.map((instrument) => (
+                  <MenuItem key={instrument.id} value={instrument.id}>
                     {this.props.leader ? (
                       <Checkbox
                         checked={
-                          this.state.instruments.indexOf(instrument) > -1
+                          this.state.instruments.indexOf(instrument.id) > -1
                         }
                       />
                     ) : null}
                     <ListItemText
-                      primary={instrument}
+                      primary={instrument.name}
                       style={{ color: '#06070E' }}
                     />
                   </MenuItem>

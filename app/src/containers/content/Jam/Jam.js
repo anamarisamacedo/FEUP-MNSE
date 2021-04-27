@@ -30,8 +30,14 @@ class Jam extends React.Component {
     this.handlePlay = this.handlePlay.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { id } = this.props.match.params;
+
+    if (id) {
+      const jam = await jamService.findJam(id);
+
+      this.setState({ settings: jam.settings });
+    }
   }
 
   componentWillUnmount() {
@@ -44,7 +50,8 @@ class Jam extends React.Component {
   }
 
   async handlePlay(hasStarted, settings) {
-    console.log(settings);
+    await jamService.updateJamSettings(this.state.connection.jamId, settings);
+    await jamService.startJam(this.state.connection.jamId);
     this.setState({ hasStarted, settings });
   }
 
@@ -63,7 +70,7 @@ class Jam extends React.Component {
     // The line below can be uncommented for testing purposes
     // this.setState({ hasStarted: true });
 
-    connection.socket.on('start-jam', () => {
+    connection.socket.on('start-jam', async () => {
       console.log('received start-jam');
 
       this.setState({ hasStarted: true });

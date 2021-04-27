@@ -14,6 +14,16 @@ testSynth.color = '#26e06a';
 testSynth2.color = '#3486eb';
 testSynth3.color = '#cf03fc';
 
+// Set instrument ID
+testSynth.id = 'testSynth';
+testSynth2.id = 'testSynth2';
+testSynth3.id = 'testSynth3';
+
+// Set instrument name
+testSynth.name = 'Test Synth';
+testSynth2.name = 'Test Synth 2';
+testSynth3.name = 'Test Synth 3';
+
 // Add instrument to list
 instruments.testSynth = testSynth;
 instruments.testSynth2 = testSynth2;
