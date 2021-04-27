@@ -92,7 +92,7 @@ class Lobby extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container spacing={1} direction="row" textAlign="center">
+        <Grid container spacing={1} direction="row" alignItems="center">
           <Grid item xs sm={6} styles={{ textAlign: 'center' }}>
             <Panel
               className={styles.Panel}
@@ -211,9 +211,9 @@ Lobby.defaultProps = {
   onPlay: () => {},
   settings: {
     title: '',
-    bpm: 80,
-    measures: 1,
-    turnDuration: 60,
+    bpm: 100,
+    measures: 5,
+    turnDuration: 80,
     instruments: [],
   },
 };

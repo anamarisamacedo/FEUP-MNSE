@@ -28,7 +28,7 @@ const instrumentList = mapInstruments(instruments);
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: 48 * 4.5 + 8,
+      maxHeight: 224,
       width: 200,
     },
   },
@@ -85,7 +85,7 @@ class Settings extends React.Component {
 
   componentDidMount() {
     this.setState({
-      title: this.props.settings.jamTitle,
+      title: this.props.settings.title,
       bpm: this.props.settings.bpm,
       measures: this.props.settings.measures,
       turnDuration: this.props.settings.turnDuration,
@@ -171,7 +171,7 @@ class Settings extends React.Component {
             <TextField
               required
               id="standard-required"
-              value={this.state.jamTitle}
+              value={this.state.title}
               onChange={this.handleChangeJamTitle}
               disabled={!this.props.leader}
             />
@@ -275,7 +275,7 @@ class Settings extends React.Component {
 Settings.propTypes = {
   onSetSettings: PropTypes.func,
   settings: PropTypes.shape({
-    jamTitle: PropTypes.string,
+    title: PropTypes.string,
     bpm: PropTypes.number,
     measures: PropTypes.number,
     turnDuration: PropTypes.number,
@@ -287,7 +287,7 @@ Settings.propTypes = {
 Settings.defaultProps = {
   onSetSettings: () => {},
   settings: {
-    jamTitle: '',
+    title: '',
     bpm: 80,
     measures: 1,
     turnDuration: 60,
