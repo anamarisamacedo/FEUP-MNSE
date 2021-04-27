@@ -74,6 +74,10 @@ class Jam extends React.Component {
       this.setState({ hasStarted: true });
     });
 
+    connection.socket.on('current-users', (currentUsers) => {
+      this.setState({ users: currentUsers });
+    });
+
     return connection;
   }
 
@@ -85,7 +89,7 @@ class Jam extends React.Component {
           connection={this.state.connection}
         >
           {this.state.hasStarted ? (
-            <Game settings={this.state.settings} />
+            <Game settings={this.state.settings} users={this.state.users} />
           ) : (
             <Lobby
               leader={this.props.match.params.id ? null : this.state.username}
