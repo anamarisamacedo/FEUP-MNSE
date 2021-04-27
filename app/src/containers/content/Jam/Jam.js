@@ -1,12 +1,12 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import Lobby from "./Lobby/Lobby";
-import Game from "./Game/Game";
-import Login from "./Login/Login";
-import Connection from "../../../utils/Connection";
-import { AppContextProvider } from "../../../utils/AppContext";
-import jamService from "../../../services/jamService";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Lobby from './Lobby/Lobby';
+import Game from './Game/Game';
+import Login from './Login/Login';
+import Connection from '../../../utils/Connection';
+import { AppContextProvider } from '../../../utils/AppContext';
+import jamService from '../../../services/jamService';
 
 class Jam extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Jam extends React.Component {
       connection: null,
       username: null,
       settings: {
-        title: "Jam 1",
+        title: 'Jam 1',
         bpm: 100,
         measures: 5,
         turnDuration: 60,
@@ -63,8 +63,8 @@ class Jam extends React.Component {
     // The line below can be uncommented for testing purposes
     // this.setState({ hasStarted: true });
 
-    connection.socket.on("start-jam", () => {
-      console.log("received start-jam");
+    connection.socket.on('start-jam', () => {
+      console.log('received start-jam');
 
       this.setState({ hasStarted: true });
     });
