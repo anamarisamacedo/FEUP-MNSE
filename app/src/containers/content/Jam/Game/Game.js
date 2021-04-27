@@ -90,7 +90,7 @@ class Game extends React.Component {
         </Grid>
         <Grid item xs={2} style={{ minHeight: '80vh' }}>
           <Panel>
-            <Sidebar />
+            <Sidebar users={this.props.users} />
           </Panel>
         </Grid>
         <Grid item xs={12} style={{ height: '5vh' }}>
@@ -115,6 +115,7 @@ Game.propTypes = {
     turnDuration: PropTypes.number,
     instruments: PropTypes.arrayOf(PropTypes.string),
   }),
+  users: PropTypes.arrayOf(PropTypes.string),
 };
 
 Game.defaultProps = {
@@ -125,6 +126,7 @@ Game.defaultProps = {
     turnDuration: 60,
     instruments: [],
   },
+  users: [],
 };
 
 export default withAppContext(Game);
