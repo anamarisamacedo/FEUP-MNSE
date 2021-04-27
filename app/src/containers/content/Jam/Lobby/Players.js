@@ -21,7 +21,7 @@ class Players extends React.Component {
   async componentDidMount() {
     const conn = this.props.connection;
 
-    //this.setState({ currentUsers: this.props.users });
+    // this.setState({ currentUsers: this.props.users });
 
     conn.socket.on('current-users', (currentUsers) => {
       this.setState({ currentUsers });
@@ -36,7 +36,7 @@ class Players extends React.Component {
         </Typography>
         <List>
           {this.state.currentUsers.map((user) => (
-            <ListItem>
+            <ListItem key={user}>
               <ListItemAvatar>
                 <Avatar src="https://i.pravatar.cc/300" />
               </ListItemAvatar>
@@ -53,7 +53,7 @@ class Players extends React.Component {
 
 Players.propTypes = {
   connection: PropTypes.instanceOf(Connection).isRequired,
-  //users: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // users: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default withAppContext(Players);

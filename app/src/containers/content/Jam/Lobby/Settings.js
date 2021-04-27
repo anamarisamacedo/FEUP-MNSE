@@ -107,7 +107,7 @@ class Settings extends React.Component {
   }
 
   handleChangeTurnTime(event) {
-    const turnDuration = parseInt(event.target.value);
+    const turnDuration = parseInt(event.target.value, 10);
     this.setState({ turnDuration });
     this.props.onSetSettings(
       this.state.title,
@@ -142,7 +142,7 @@ class Settings extends React.Component {
   }
 
   handleChangeMeasures(event) {
-    const measures = parseInt(event.target.value);
+    const measures = parseInt(event.target.value, 10);
     this.setState({ measures });
     this.props.onSetSettings(
       this.state.title,
@@ -281,7 +281,7 @@ Settings.propTypes = {
     turnDuration: PropTypes.number,
     instruments: PropTypes.arrayOf(PropTypes.string),
   }),
-  leader: PropTypes.string.isRequired,
+  leader: PropTypes.bool.isRequired,
 };
 
 Settings.defaultProps = {

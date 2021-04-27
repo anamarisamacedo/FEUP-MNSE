@@ -1,14 +1,13 @@
-import styles from "./HowToPlay.module.css";
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 function HowToPlay() {
   return (
     <div>
-      <Typography variant="h4" style={{ marginTop: "20px" }}>
+      <Typography variant="h4" style={{ marginTop: '20px' }}>
         How To Play
       </Typography>
-      <Grid container spacing={4} style={{ marginTop: "35px", textAlign: "center"  }}>
+      <Grid container spacing={4} style={{ marginTop: '35px', textAlign: 'center' }}>
         <Grid item xs={12}>
           <Typography variant="body1" style={{ flex: 1 }}>
             1. Wait for your turn

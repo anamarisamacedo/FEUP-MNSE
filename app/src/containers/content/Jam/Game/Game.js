@@ -31,8 +31,6 @@ class Game extends React.Component {
     const conn = this.props.connection;
 
     conn.socket.on('next-turn', (turn) => {
-      console.log('next-turn');
-      console.log(turn);
       this.setState({ currentMeasure: turn.measure, currentInstrument: turn.instrument });
 
       if (turn.player === this.props.username) {
@@ -45,18 +43,12 @@ class Game extends React.Component {
     });
 
     conn.socket.on('req-song-data', (username) => {
-      console.log(`received req-song-data ${username}`);
-
       if (username === this.props.username) {
-        console.log('sending song data');
-        console.log(this.state.song);
         conn.socket.emit('song-data', this.state.song);
       }
     });
 
     conn.socket.on('song-data', (song) => {
-      console.log('received song-data');
-      console.log(song);
       this.setState({ song });
     });
   }
@@ -74,7 +66,6 @@ class Game extends React.Component {
   }
 
   updateTime() {
-    console.log('timeLeft ' + this.state.timeLeft);
     if (this.state.timeLeft > 0) this.setState((state) => ({ timeLeft: state.timeLeft - 1 }));
   }
 

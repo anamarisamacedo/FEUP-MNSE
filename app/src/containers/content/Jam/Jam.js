@@ -59,6 +59,7 @@ class Jam extends React.Component {
 
     if (!id) {
       // Create default jam
+      // eslint-disable-next-line react/no-access-state-in-setstate
       const jam = await jamService.createJam(username, this.state.settings);
       this.setState({ users: jam.users });
 
@@ -70,8 +71,6 @@ class Jam extends React.Component {
     // this.setState({ hasStarted: true });
 
     connection.socket.on('start-jam', async () => {
-      console.log('received start-jam');
-
       this.setState({ hasStarted: true });
     });
 
