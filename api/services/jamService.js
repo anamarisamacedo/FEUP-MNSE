@@ -20,9 +20,19 @@ function startJam(jamId) {
   jamManager.startJam(jamId);
 }
 
+function updateJamSettings(jamId, settings) {
+  return jamManager.updateJamSettings(jamId, settings);
+}
+
+function findJam(jamId) {
+  return jamManager.findJamById(jamId);
+}
+
 module.exports = {
   createJam,
   joinJam,
   leaveJam,
   startJam,
+  updateJamSettings,
+  findJam,
 };

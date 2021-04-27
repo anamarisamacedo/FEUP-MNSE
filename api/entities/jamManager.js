@@ -19,16 +19,6 @@ class JamManager {
         },
       }),
     );
-
-    const jam = new Jam('user1', {
-      measures: 2,
-      turnDuration: 5,
-      instruments: ['testSynth', 'testSynth2', 'testSynth3'],
-    });
-    jam.addUser('user2');
-    this.addJam(jam);
-
-    this.jams.push(jam);
   }
 
   startServer() {
@@ -73,7 +63,8 @@ class JamManager {
   }
 
   addJam(jam) {
-    jam.giveId('jam1');
+    const id = nanoid(10);
+    jam.giveId(id);
     this.jams.push(jam);
   }
 
@@ -108,10 +99,10 @@ class JamManager {
 
     if (jam.status === Jam.Statuses.OVER) throw new JamAlreadyOverError();
 
+    jam.status = Statuses.STARTED;
+
     // Broadcast to users who have joined the jam that it has started
     this.socket.to(jamId).emit('start-jam');
-
-    jam.status = Statuses.STARTED;
 
     // Schedule next turn notifications for the jam
     this.notifyNextTurn(jam.id);
@@ -157,6 +148,24 @@ class JamManager {
     return this.connectedClients.find(
       (socket) => socket.handshake.query.username === username,
     );
+  }
+
+  updateJamSettings(jamId, settings) {
+    const index = this.jams.findIndex((jam) => jam.id === jamId);
+
+    if (index < 0) throw new JamNotFoundError();
+
+    this.jams[index].settings = settings;
+
+    return this.jams[index];
+  }
+
+  findJamById(jamId) {
+    const index = this.jams.findIndex((jam) => jam.id === jamId);
+
+    if (index < 0) throw new JamNotFoundError();
+
+    return this.jams[index];
   }
 }
 
