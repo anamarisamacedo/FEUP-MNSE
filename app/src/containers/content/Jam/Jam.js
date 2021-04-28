@@ -57,6 +57,8 @@ class Jam extends React.Component {
     const settings = cloneDeep(this.state.settings);
     Object.assign(settings, newSettings);
     this.setState({ settings });
+
+    jamService.updateJamSettings(this.state.connection.jamId, settings);
   }
 
   async handlePlay() {
