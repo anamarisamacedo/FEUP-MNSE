@@ -69,10 +69,6 @@ class Settings extends React.Component {
     super(props);
 
     this.state = {
-      title: '',
-      bpm: 100,
-      measures: 5,
-      turnDuration: 60,
       instruments: [],
     };
 
@@ -83,67 +79,30 @@ class Settings extends React.Component {
     this.handleChangeMeasures = this.handleChangeMeasures.bind(this);
   }
 
-  componentDidMount() {
-  }
-
   handleChangeJamTitle(event) {
     const title = event.target.value;
-
-    this.setState({ title });
-    this.props.onSetSettings(
-      title,
-      this.state.bpm,
-      this.state.measures,
-      this.state.turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ title });
   }
 
   handleChangeTurnTime(event) {
     const turnDuration = parseInt(event.target.value, 10);
-    this.setState({ turnDuration });
-    this.props.onSetSettings(
-      this.state.title,
-      this.state.bpm,
-      this.state.measures,
-      turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ turnDuration });
   }
 
   handleChangeInstruments(event) {
     const selectedInstruments = event.target.value;
+
     this.setState({ instruments: selectedInstruments });
-    this.props.onSetSettings(
-      this.state.title,
-      this.state.bpm,
-      this.state.measures,
-      this.state.turnDuration,
-      selectedInstruments,
-    );
+    this.props.onSetSettings({ instruments: selectedInstruments });
   }
 
   handleChangeBPM(event, newValue) {
-    this.setState({ bpm: newValue });
-    this.props.onSetSettings(
-      this.state.title,
-      newValue,
-      this.state.measures,
-      this.state.turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ bpm: newValue });
   }
 
   handleChangeMeasures(event) {
     const measures = parseInt(event.target.value, 10);
-    this.setState({ measures });
-    this.props.onSetSettings(
-      this.state.title,
-      this.state.bpm,
-      measures,
-      this.state.turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ measures });
   }
 
   render() {
@@ -164,7 +123,6 @@ class Settings extends React.Component {
             <TextField
               required
               id="standard-required"
-              value={this.props.settings.title}
               onChange={this.handleChangeJamTitle}
               disabled={!this.props.leader}
             />

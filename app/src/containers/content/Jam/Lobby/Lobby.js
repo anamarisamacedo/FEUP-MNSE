@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import debounce from 'debounce';
 import { withAppContext } from '../../../../utils/AppContext';
 import Connection from '../../../../utils/Connection';
 import Panel from '../../../../components/Panel/Panel';
@@ -13,7 +12,6 @@ import logo from '../../../../logo.png';
 import styles from './Lobby.module.css';
 import Settings from './Settings';
 import Players from './Players';
-import jamService from '../../../../services/jamService';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -26,7 +24,6 @@ class Lobby extends React.Component {
     };
 
     this.handlePlay = this.handlePlay.bind(this);
-    this.handleSetSettings = this.handleSetSettings.bind(this);
   }
 
   componentDidMount() {
@@ -35,19 +32,6 @@ class Lobby extends React.Component {
     if (this.props.connection.username === this.props.leader) {
       this.setState({ leader: true });
     }
-  }
-
-  async handleSetSettings(title, bpm, measures, turnDuration, instruments) {
-    const settings = {
-      title,
-      bpm,
-      measures,
-      turnDuration,
-      instruments,
-    };
-
-    this.props.onSetSettings(settings);
-    await jamService.updateJamSettings(this.props.connection.jamId, settings);
   }
 
   handlePlay() {
@@ -106,7 +90,7 @@ class Lobby extends React.Component {
                   >
                     <Settings
                       settings={this.props.settings}
-                      onSetSettings={debounce(this.handleSetSettings, 400)}
+                      onSetSettings={this.props.onSetSettings}
                       leader={this.state.leader}
                     />
                   </Panel>
@@ -121,7 +105,7 @@ class Lobby extends React.Component {
                   >
                     <Settings
                       settings={this.props.settings}
-                      onSetSettings={this.handleSetSettings}
+                      onSetSettings={this.props.onSetSettings}
                       leader={this.state.leader}
                     />
                   </Panel>

@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import debounce from 'debounce';
+import { cloneDeep } from 'lodash';
 import Lobby from './Lobby/Lobby';
 import Game from './Game/Game';
 import Login from './Login/Login';
@@ -51,7 +52,10 @@ class Jam extends React.Component {
     this.setState({ connection, username });
   }
 
-  async handleSetSettings(settings) {
+  handleSetSettings(newSettings) {
+    // eslint-disable-next-line react/no-access-state-in-setstate
+    const settings = cloneDeep(this.state.settings);
+    Object.assign(settings, newSettings);
     this.setState({ settings });
   }
 
