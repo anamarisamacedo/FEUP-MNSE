@@ -84,13 +84,6 @@ class Settings extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      title: this.props.settings.title,
-      bpm: this.props.settings.bpm,
-      measures: this.props.settings.measures,
-      turnDuration: this.props.settings.turnDuration,
-      instruments: this.props.settings.instruments,
-    });
   }
 
   handleChangeJamTitle(event) {
@@ -171,7 +164,7 @@ class Settings extends React.Component {
             <TextField
               required
               id="standard-required"
-              value={this.state.title}
+              value={this.props.settings.title}
               onChange={this.handleChangeJamTitle}
               disabled={!this.props.leader}
             />
@@ -193,7 +186,7 @@ class Settings extends React.Component {
                 onChange={this.handleChangeTurnTime}
               />
             ) : (
-              <TextField value={this.state.turnDuration} disabled />
+              <TextField value={this.props.settings.turnDuration} disabled />
             )}
           </Grid>
           <Grid item xs={12} sm={5}>
@@ -239,7 +232,7 @@ class Settings extends React.Component {
             <PrettoSlider
               valueLabelDisplay="auto"
               aria-label="pretto slider"
-              defaultValue={this.state.bpm}
+              defaultValue={this.props.settings.bpm}
               onChange={this.handleChangeBPM}
               min={50}
               max={250}
@@ -263,7 +256,7 @@ class Settings extends React.Component {
                 onChange={this.handleChangeMeasures}
               />
             ) : (
-              <TextField value={this.state.measures} disabled />
+              <TextField value={this.props.settings.measures} disabled />
             )}
           </Grid>
         </Grid>
@@ -288,8 +281,8 @@ Settings.defaultProps = {
   onSetSettings: () => {},
   settings: {
     title: '',
-    bpm: 80,
-    measures: 1,
+    bpm: 100,
+    measures: 5,
     turnDuration: 60,
     instruments: [],
   },

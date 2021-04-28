@@ -20,13 +20,6 @@ class Lobby extends React.Component {
     super(props);
 
     this.state = {
-      settings: {
-        title: '',
-        bpm: 100,
-        measures: 5,
-        turnDuration: 60,
-        instruments: [],
-      },
       copied: false,
       copyUrl: '',
       leader: false,
@@ -37,8 +30,6 @@ class Lobby extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ settings: this.props.settings });
-
     const conn = this.props.connection;
     this.setState({ copyUrl: `http://localhost:3000/jam/${conn.jamId}` });
     if (this.props.connection.username === this.props.leader) {
@@ -55,12 +46,12 @@ class Lobby extends React.Component {
       instruments,
     };
 
+    this.props.onSetSettings(settings);
     await jamService.updateJamSettings(this.props.connection.jamId, settings);
-    this.setState({ settings });
   }
 
   handlePlay() {
-    this.props.onPlay(true, this.state.settings);
+    this.props.onPlay(true);
   }
 
   render() {
@@ -194,10 +185,11 @@ class Lobby extends React.Component {
 }
 
 Lobby.propTypes = {
+  onSetSettings: PropTypes.func,
   connection: PropTypes.instanceOf(Connection).isRequired,
   onPlay: PropTypes.func,
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
-  leader: PropTypes.string.isRequired,
+  leader: PropTypes.string,
   settings: PropTypes.shape({
     title: PropTypes.string,
     bpm: PropTypes.number,
@@ -208,12 +200,14 @@ Lobby.propTypes = {
 };
 
 Lobby.defaultProps = {
+  onSetSettings: () => {},
   onPlay: () => {},
+  leader: false,
   settings: {
     title: '',
     bpm: 100,
     measures: 5,
-    turnDuration: 80,
+    turnDuration: 60,
     instruments: [],
   },
 };

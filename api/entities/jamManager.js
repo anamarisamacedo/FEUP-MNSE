@@ -32,7 +32,13 @@ class JamManager {
 
       // Add player to the Jam room
       client.join(jamId);
+
       console.log(`User ${username} joined Jam ${jamId}`);
+
+      const index = this.jams.findIndex((jam) => jam.id === jamId);
+      if (this.jams[index].leader !== username) {
+        client.join(`${jamId}/invitedUsers`);
+      }
 
       this.addUserToJam(username, jamId);
       this.connectedClients.push(client);
@@ -54,8 +60,6 @@ class JamManager {
         this.notifyNextTurn(jamId);
       });
     });
-
-    console.log(this.socket);
 
     this.socket.listen(port);
 
@@ -156,6 +160,8 @@ class JamManager {
     if (index < 0) throw new JamNotFoundError();
 
     this.jams[index].settings = settings;
+
+    this.socket.to(`${jamId}/invitedUsers`).emit('set-settings', settings);
 
     return this.jams[index];
   }
