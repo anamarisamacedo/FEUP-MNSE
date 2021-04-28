@@ -85,6 +85,7 @@ class Game extends React.Component {
               song={this.state.song}
               currentMeasure={this.state.currentMeasure}
               totalMeasures={this.props.settings.measures}
+              bpm={this.props.settings.bpm}
             />
           </Panel>
         </Grid>

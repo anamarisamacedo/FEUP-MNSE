@@ -45,14 +45,12 @@ class Sequencer extends React.Component {
     this.tick = this.tick.bind(this);
   }
 
-  static setBpm(bpm) {
-    Tone.Transport.bpm.value = bpm;
-  }
-
   componentDidMount() {
     this.drawGrid();
     this.drawNotes(this.props.currentMeasure);
     this.updateSequence();
+
+    Tone.Transport.bpm.value = this.props.bpm;
   }
 
   componentWillUnmount() {
@@ -296,6 +294,7 @@ Sequencer.propTypes = {
   instrumentId: PropTypes.string.isRequired,
   song: PropTypes.arrayOf(PropTypes.array),
   currentMeasure: PropTypes.number.isRequired,
+  bpm: PropTypes.number.isRequired,
 };
 
 Sequencer.defaultProps = {
