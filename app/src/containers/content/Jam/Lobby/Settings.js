@@ -64,6 +64,36 @@ const PrettoSlider = withStyles({
   },
 })(Slider);
 
+const DisabledPrettoSlider = withStyles({
+  root: {
+    color: '#A7C6DA',
+    height: 7,
+    width: '220px',
+  },
+  thumb: {
+    height: 20,
+    width: 20,
+    backgroundColor: '#F4F2F3',
+    boxShadow: '0 2px 10px 0 rgba(114, 114, 114, 0.5)',
+    border: '5px solid #ffffff',
+    marginTop: -8,
+    marginLeft: -12,
+  },
+  active: {},
+  valueLabel: {
+    left: 'calc(-50% - 15px)',
+  },
+  track: {
+    height: 7,
+    borderRadius: 4,
+  },
+  rail: {
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#F4F2F3',
+  },
+})(Slider);
+
 class Settings extends React.Component {
   constructor(props) {
     super(props);
@@ -120,12 +150,15 @@ class Settings extends React.Component {
             <Typography variant="body1">Jam Title</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="standard-required"
-              onChange={this.handleChangeJamTitle}
-              disabled={!this.props.leader}
-            />
+            {this.props.leader ? (
+              <TextField
+                required
+                id="standard-required"
+                onChange={this.handleChangeJamTitle}
+              />
+            ) : (
+              <TextField value={this.props.settings.title} disabled />
+            )}
           </Grid>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Turn Duration (sec)</Typography>
@@ -187,16 +220,26 @@ class Settings extends React.Component {
             <Typography variant="body1">Bpm</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PrettoSlider
-              valueLabelDisplay="auto"
-              aria-label="pretto slider"
-              defaultValue={this.props.settings.bpm}
-              onChange={this.handleChangeBPM}
-              min={50}
-              max={250}
-              step={10}
-              disabled={!this.props.leader}
-            />
+            {this.props.leader ? (
+              <PrettoSlider
+                valueLabelDisplay="auto"
+                aria-label="pretto slider"
+                defaultValue={this.props.settings.bpm || 0}
+                onChange={this.handleChangeBPM}
+                min={50}
+                max={250}
+                step={10}
+              />
+            ) : (
+              <DisabledPrettoSlider
+                valueLabelDisplay="on"
+                aria-label="pretto slider"
+                value={this.props.settings.bpm}
+                min={50}
+                max={250}
+                disabled={!this.props.leader}
+              />
+            )}
           </Grid>
           <Grid item xs={12} sm={5}>
             <Typography variant="body1">Measures</Typography>
