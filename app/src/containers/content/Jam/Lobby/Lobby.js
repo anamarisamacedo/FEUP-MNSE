@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import debounce from 'debounce';
 import { withAppContext } from '../../../../utils/AppContext';
 import Connection from '../../../../utils/Connection';
 import Panel from '../../../../components/Panel/Panel';
@@ -13,32 +12,21 @@ import logo from '../../../../logo.png';
 import styles from './Lobby.module.css';
 import Settings from './Settings';
 import Players from './Players';
-import jamService from '../../../../services/jamService';
 
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      settings: {
-        title: '',
-        bpm: 100,
-        measures: 5,
-        turnDuration: 60,
-        instruments: [],
-      },
       copied: false,
       copyUrl: '',
       leader: false,
     };
 
     this.handlePlay = this.handlePlay.bind(this);
-    this.handleSetSettings = this.handleSetSettings.bind(this);
   }
 
   componentDidMount() {
-    this.setState({ settings: this.props.settings });
-
     const conn = this.props.connection;
     this.setState({ copyUrl: `http://localhost:3000/jam/${conn.jamId}` });
     if (this.props.connection.username === this.props.leader) {
@@ -46,21 +34,8 @@ class Lobby extends React.Component {
     }
   }
 
-  async handleSetSettings(title, bpm, measures, turnDuration, instruments) {
-    const settings = {
-      title,
-      bpm,
-      measures,
-      turnDuration,
-      instruments,
-    };
-
-    await jamService.updateJamSettings(this.props.connection.jamId, settings);
-    this.setState({ settings });
-  }
-
   handlePlay() {
-    this.props.onPlay(true, this.state.settings);
+    this.props.onPlay(true);
   }
 
   render() {
@@ -92,7 +67,7 @@ class Lobby extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container spacing={1} direction="row" textAlign="center">
+        <Grid container spacing={1} direction="row" alignItems="center">
           <Grid item xs sm={6} styles={{ textAlign: 'center' }}>
             <Panel
               className={styles.Panel}
@@ -115,7 +90,7 @@ class Lobby extends React.Component {
                   >
                     <Settings
                       settings={this.props.settings}
-                      onSetSettings={debounce(this.handleSetSettings, 400)}
+                      onSetSettings={this.props.onSetSettings}
                       leader={this.state.leader}
                     />
                   </Panel>
@@ -130,7 +105,7 @@ class Lobby extends React.Component {
                   >
                     <Settings
                       settings={this.props.settings}
-                      onSetSettings={this.handleSetSettings}
+                      onSetSettings={this.props.onSetSettings}
                       leader={this.state.leader}
                     />
                   </Panel>
@@ -194,10 +169,11 @@ class Lobby extends React.Component {
 }
 
 Lobby.propTypes = {
+  onSetSettings: PropTypes.func,
   connection: PropTypes.instanceOf(Connection).isRequired,
   onPlay: PropTypes.func,
   users: PropTypes.arrayOf(PropTypes.string).isRequired,
-  leader: PropTypes.string.isRequired,
+  leader: PropTypes.string,
   settings: PropTypes.shape({
     title: PropTypes.string,
     bpm: PropTypes.number,
@@ -208,11 +184,13 @@ Lobby.propTypes = {
 };
 
 Lobby.defaultProps = {
+  onSetSettings: () => {},
   onPlay: () => {},
+  leader: false,
   settings: {
     title: '',
-    bpm: 80,
-    measures: 1,
+    bpm: 100,
+    measures: 5,
     turnDuration: 60,
     instruments: [],
   },

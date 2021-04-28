@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import debounce from 'debounce';
+import { cloneDeep } from 'lodash';
 import Lobby from './Lobby/Lobby';
 import Game from './Game/Game';
 import Login from './Login/Login';
@@ -27,6 +29,7 @@ class Jam extends React.Component {
     };
 
     this.handleSetUsername = this.handleSetUsername.bind(this);
+    this.handleSetSettings = this.handleSetSettings.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
   }
 
@@ -49,9 +52,16 @@ class Jam extends React.Component {
     this.setState({ connection, username });
   }
 
-  async handlePlay(hasStarted, settings) {
+  handleSetSettings(newSettings) {
+    // eslint-disable-next-line react/no-access-state-in-setstate
+    const settings = cloneDeep(this.state.settings);
+    Object.assign(settings, newSettings);
+    this.setState({ settings });
+  }
+
+  async handlePlay() {
     await jamService.startJam(this.state.connection.jamId);
-    this.setState({ hasStarted, settings });
+    this.setState({ hasStarted: true });
   }
 
   async setupConnection(username) {
@@ -74,8 +84,12 @@ class Jam extends React.Component {
       this.setState({ hasStarted: true });
     });
 
-    connection.socket.on('current-users', (currentUsers) => {
-      this.setState({ users: currentUsers });
+    connection.socket.on('current-users', (users) => {
+      this.setState({ users });
+    });
+
+    connection.socket.on('set-settings', (settings) => {
+      this.setState({ settings });
     });
 
     return connection;
@@ -96,6 +110,7 @@ class Jam extends React.Component {
               users={this.state.users}
               onPlay={this.handlePlay}
               settings={this.state.settings}
+              onSetSettings={debounce(this.handleSetSettings, 400)}
             />
           )}
         </AppContextProvider>

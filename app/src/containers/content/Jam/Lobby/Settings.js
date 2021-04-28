@@ -28,7 +28,7 @@ const instrumentList = mapInstruments(instruments);
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: 48 * 4.5 + 8,
+      maxHeight: 224,
       width: 200,
     },
   },
@@ -69,10 +69,6 @@ class Settings extends React.Component {
     super(props);
 
     this.state = {
-      title: '',
-      bpm: 100,
-      measures: 5,
-      turnDuration: 60,
       instruments: [],
     };
 
@@ -83,74 +79,30 @@ class Settings extends React.Component {
     this.handleChangeMeasures = this.handleChangeMeasures.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({
-      title: this.props.settings.jamTitle,
-      bpm: this.props.settings.bpm,
-      measures: this.props.settings.measures,
-      turnDuration: this.props.settings.turnDuration,
-      instruments: this.props.settings.instruments,
-    });
-  }
-
   handleChangeJamTitle(event) {
     const title = event.target.value;
-
-    this.setState({ title });
-    this.props.onSetSettings(
-      title,
-      this.state.bpm,
-      this.state.measures,
-      this.state.turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ title });
   }
 
   handleChangeTurnTime(event) {
     const turnDuration = parseInt(event.target.value, 10);
-    this.setState({ turnDuration });
-    this.props.onSetSettings(
-      this.state.title,
-      this.state.bpm,
-      this.state.measures,
-      turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ turnDuration });
   }
 
   handleChangeInstruments(event) {
     const selectedInstruments = event.target.value;
+
     this.setState({ instruments: selectedInstruments });
-    this.props.onSetSettings(
-      this.state.title,
-      this.state.bpm,
-      this.state.measures,
-      this.state.turnDuration,
-      selectedInstruments,
-    );
+    this.props.onSetSettings({ instruments: selectedInstruments });
   }
 
   handleChangeBPM(event, newValue) {
-    this.setState({ bpm: newValue });
-    this.props.onSetSettings(
-      this.state.title,
-      newValue,
-      this.state.measures,
-      this.state.turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ bpm: newValue });
   }
 
   handleChangeMeasures(event) {
     const measures = parseInt(event.target.value, 10);
-    this.setState({ measures });
-    this.props.onSetSettings(
-      this.state.title,
-      this.state.bpm,
-      measures,
-      this.state.turnDuration,
-      this.state.instruments,
-    );
+    this.props.onSetSettings({ measures });
   }
 
   render() {
@@ -171,7 +123,6 @@ class Settings extends React.Component {
             <TextField
               required
               id="standard-required"
-              value={this.state.jamTitle}
               onChange={this.handleChangeJamTitle}
               disabled={!this.props.leader}
             />
@@ -193,7 +144,7 @@ class Settings extends React.Component {
                 onChange={this.handleChangeTurnTime}
               />
             ) : (
-              <TextField value={this.state.turnDuration} disabled />
+              <TextField value={this.props.settings.turnDuration} disabled />
             )}
           </Grid>
           <Grid item xs={12} sm={5}>
@@ -239,7 +190,7 @@ class Settings extends React.Component {
             <PrettoSlider
               valueLabelDisplay="auto"
               aria-label="pretto slider"
-              defaultValue={this.state.bpm}
+              defaultValue={this.props.settings.bpm}
               onChange={this.handleChangeBPM}
               min={50}
               max={250}
@@ -263,7 +214,7 @@ class Settings extends React.Component {
                 onChange={this.handleChangeMeasures}
               />
             ) : (
-              <TextField value={this.state.measures} disabled />
+              <TextField value={this.props.settings.measures} disabled />
             )}
           </Grid>
         </Grid>
@@ -275,7 +226,7 @@ class Settings extends React.Component {
 Settings.propTypes = {
   onSetSettings: PropTypes.func,
   settings: PropTypes.shape({
-    jamTitle: PropTypes.string,
+    title: PropTypes.string,
     bpm: PropTypes.number,
     measures: PropTypes.number,
     turnDuration: PropTypes.number,
@@ -287,9 +238,9 @@ Settings.propTypes = {
 Settings.defaultProps = {
   onSetSettings: () => {},
   settings: {
-    jamTitle: '',
-    bpm: 80,
-    measures: 1,
+    title: '',
+    bpm: 100,
+    measures: 5,
     turnDuration: 60,
     instruments: [],
   },

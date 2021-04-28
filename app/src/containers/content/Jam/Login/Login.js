@@ -55,9 +55,6 @@ class Login extends React.Component {
             <Grid item>
               <div>
                 <Avatar
-                  alt="Remy Sharp"
-                  onCrop={this.onCrop}
-                  onClose={this.onClose}
                   src="https://i.pravatar.cc/300"
                   style={{ width: '180px', height: '180px' }}
                 />
