@@ -3,22 +3,7 @@ body {
   margin: 0 !important;
 }
 
-.container {
-  display: flex;
+.back{
+  transform: rotate(180deg)
 }
 
-.logo,
-.howToPlay {
-  flex: auto;
-  text-align: center;
-  padding: 1em;
-  margin-top: 50px;
-}
-
-.logo {
-  height: 100vh;
-}
-
-.howToPlay {
-  height: calc(var(--vh, 1vh) * 100);
-}

@@ -45,8 +45,9 @@ class Lobby extends React.Component {
           <Grid item xs sm={3} style={{ marginTop: '1%', marginLeft: '1%' }}>
             <Button
               variant="contained"
-              startIcon={<PlayArrowOutlinedIcon color="secondary" />}
+              startIcon={<PlayArrowOutlinedIcon color="secondary" className={styles.back} />}
               href="/jam"
+
             >
               Back
             </Button>
