@@ -171,9 +171,7 @@ class Settings extends React.Component {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                min={30}
-                max={180}
-                setp={10}
+                InputProps={{ inputProps: { min: 30, max: 180, step: 10 } }}
                 onChange={this.handleChangeTurnTime}
               />
             ) : (
@@ -184,7 +182,7 @@ class Settings extends React.Component {
             <Typography variant="body1">Instruments</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl styles={{ width: 100, maxWidth: 100 }}>
+            <FormControl>
               <InputLabel id="demo-mutiple-checkbox-label">
                 Instruments
               </InputLabel>
@@ -252,8 +250,7 @@ class Settings extends React.Component {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                min={1}
-                max={10}
+                InputProps={{ inputProps: { min: 0, max: 10, length: 100 } }}
                 onChange={this.handleChangeMeasures}
               />
             ) : (
