@@ -6,7 +6,40 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import Typography from '@material-ui/core/Typography';
+import CachedIcon from '@material-ui/icons/Cached';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
 import logo from '../../../../logo.png';
+
+withStyles((theme) => ({
+  badge: {
+    backgroundColor: '#FFFFFF',
+    color: '#FFFFFF',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,8 +47,10 @@ class Login extends React.Component {
 
     this.state = {
       username: '',
+      avatarKey: Math.random(),
     };
 
+    this.setAvatar = this.setAvatar.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
   }
@@ -26,6 +61,10 @@ class Login extends React.Component {
 
   handleConfirm() {
     this.props.onSetUsername(this.state.username);
+  }
+
+  setAvatar() {
+    this.setState({ avatarKey: Math.random() });
   }
 
   render() {
@@ -54,10 +93,24 @@ class Login extends React.Component {
           >
             <Grid item>
               <div>
-                <Avatar
-                  src="https://i.pravatar.cc/300"
-                  style={{ width: '180px', height: '180px' }}
-                />
+                <Badge
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  badgeContent={(
+                    <IconButton color="primary">
+                      <CachedIcon onClick={this.setAvatar} />
+                    </IconButton>
+                  )}
+                >
+                  <Avatar
+                    key={this.state.avatarKey}
+                    src="https://i.pravatar.cc/300"
+                    style={{ width: '180px', height: '180px' }}
+                  />
+                </Badge>
               </div>
             </Grid>
             <Grid item xs={12}>

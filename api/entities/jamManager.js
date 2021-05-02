@@ -37,7 +37,7 @@ class JamManager {
 
       const index = this.jams.findIndex((jam) => jam.id === jamId);
       if (this.jams[index].leader !== username) {
-        client.join(`${jamId}/invitedUsers`);
+        client.join(`${jamId}/guests`);
       }
 
       this.addUserToJam(username, jamId);
@@ -161,7 +161,7 @@ class JamManager {
 
     this.jams[index].settings = settings;
 
-    this.socket.to(`${jamId}/invitedUsers`).emit('set-settings', settings);
+    this.socket.to(`${jamId}/guests`).emit('set-settings', settings);
 
     return this.jams[index];
   }
