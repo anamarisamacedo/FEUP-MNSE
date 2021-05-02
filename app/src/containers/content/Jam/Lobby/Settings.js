@@ -186,32 +186,51 @@ class Settings extends React.Component {
               <InputLabel id="demo-mutiple-checkbox-label">
                 Instruments
               </InputLabel>
-              <Select
-                labelId="demo-mutiple-checkbox-label"
-                id="demo-mutiple-checkbox"
-                multiple
-                value={this.state.instruments}
-                onChange={this.handleChangeInstruments}
-                renderValue={(selected) => selected.join(', ')}
-                MenuProps={MenuProps}
-                style={{ width: '220px' }}
-              >
-                {instrumentList.map((instrument) => (
-                  <MenuItem key={instrument.id} value={instrument.id}>
-                    {this.props.leader ? (
+              {this.props.leader ? (
+                <Select
+                  labelId="demo-mutiple-checkbox-label"
+                  id="demo-mutiple-checkbox"
+                  multiple
+                  value={this.state.instruments}
+                  onChange={this.handleChangeInstruments}
+                  renderValue={(selected) => selected.join(', ')}
+                  MenuProps={MenuProps}
+                  style={{ width: '220px' }}
+                >
+                  {instrumentList.map((instrument) => (
+                    <MenuItem key={instrument.id} value={instrument.id}>
                       <Checkbox
                         checked={
                           this.state.instruments.indexOf(instrument.id) > -1
                         }
                       />
-                    ) : null}
-                    <ListItemText
-                      primary={instrument.name}
-                      style={{ color: '#06070E' }}
-                    />
-                  </MenuItem>
-                ))}
-              </Select>
+                      <ListItemText
+                        primary={instrument.name}
+                        style={{ color: '#06070E' }}
+                      />
+                    </MenuItem>
+                  ))}
+                </Select>
+              ) : (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  multiple
+                  value={this.props.settings.instruments}
+                  renderValue={(selected) => selected.join(', ')}
+                  MenuProps={MenuProps}
+                  style={{ width: '220px' }}
+                >
+                  {instrumentList.map((instrument) => (
+                    <MenuItem key={instrument.id} value={instrument.id}>
+                      <ListItemText
+                        primary={instrument.name}
+                        style={{ color: '#06070E' }}
+                      />
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={5}>
@@ -250,7 +269,7 @@ class Settings extends React.Component {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                InputProps={{ inputProps: { min: 0, max: 10, length: 100 } }}
+                InputProps={{ inputProps: { min: 0, max: 10 } }}
                 onChange={this.handleChangeMeasures}
               />
             ) : (
