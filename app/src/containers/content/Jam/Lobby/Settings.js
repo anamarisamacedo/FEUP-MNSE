@@ -283,7 +283,7 @@ class Settings extends React.Component {
                 }}
                 InputProps={{
                   inputProps: {
-                    min: 0,
+                    min: 1,
                     max: 10,
                     onKeyDown: (event) => {
                       event.preventDefault();
