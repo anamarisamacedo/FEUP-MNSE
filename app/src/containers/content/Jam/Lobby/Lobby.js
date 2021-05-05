@@ -180,7 +180,7 @@ Lobby.propTypes = {
     bpm: PropTypes.number,
     measures: PropTypes.number,
     turnDuration: PropTypes.number,
-    instruments: PropTypes.arrayOf(PropTypes.object),
+    instruments: PropTypes.arrayOf(PropTypes.string),
   }),
 };
 
