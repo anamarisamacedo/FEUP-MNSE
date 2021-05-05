@@ -25,6 +25,7 @@ class Jam {
     this.status = Statuses.CREATED;
     this.turn = 0;
     this.gamePlan = null;
+    this.song = [];
     // used to cancel turn notification scheduling if a player passes their turn
     this.timeout = null;
   }

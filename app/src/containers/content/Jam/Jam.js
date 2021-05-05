@@ -6,6 +6,7 @@ import { cloneDeep } from 'lodash';
 import Lobby from './Lobby/Lobby';
 import Game from './Game/Game';
 import Login from './Login/Login';
+import JamOver from './JamOver/JamOver';
 import Connection from '../../../utils/Connection';
 import { AppContextProvider } from '../../../utils/AppContext';
 import jamService from '../../../services/jamService';
@@ -16,6 +17,7 @@ class Jam extends React.Component {
 
     this.state = {
       hasStarted: false,
+      isOver: false,
       connection: null,
       username: null,
       settings: {
@@ -86,6 +88,10 @@ class Jam extends React.Component {
       this.setState({ hasStarted: true });
     });
 
+    connection.socket.on('jam-over', () => {
+      this.setState({ isOver: true });
+    });
+
     connection.socket.on('current-users', (users) => {
       this.setState({ users });
     });
@@ -98,23 +104,31 @@ class Jam extends React.Component {
   }
 
   render() {
+    let toRender;
+
+    if (this.state.hasStarted) {
+      toRender = <Game settings={this.state.settings} users={this.state.users} />;
+    } else {
+      toRender = (
+        <Lobby
+          leader={this.props.match.params.id ? null : this.state.username}
+          users={this.state.users}
+          onPlay={this.handlePlay}
+          settings={this.state.settings}
+          onSetSettings={debounce(this.handleSetSettings, 400)}
+        />
+      );
+    }
+
+    if (this.state.isOver) toRender = <JamOver />;
+
     if (this.state.username) {
       return (
         <AppContextProvider
           username={this.state.username}
           connection={this.state.connection}
         >
-          {this.state.hasStarted ? (
-            <Game settings={this.state.settings} users={this.state.users} />
-          ) : (
-            <Lobby
-              leader={this.props.match.params.id ? null : this.state.username}
-              users={this.state.users}
-              onPlay={this.handlePlay}
-              settings={this.state.settings}
-              onSetSettings={debounce(this.handleSetSettings, 400)}
-            />
-          )}
+          { toRender }
         </AppContextProvider>
       );
     }

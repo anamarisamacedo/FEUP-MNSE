@@ -54,6 +54,8 @@ class JamManager {
         console.log(`song-data: ${jamId}`);
         console.log(song);
 
+        this.jams[index].song = song;
+
         // Share the song data with all players in the Jam
         this.socket.to(jamId).emit('song-data', song);
 
@@ -80,7 +82,7 @@ class JamManager {
     if (this.jams[index].status === Jam.Statuses.OVER) { throw new JamAlreadyOverError(); }
 
     this.jams[index].addUser(username);
-    
+
     const users = this.listUsersInJam(jamId);
     this.socket.to(jamId).emit('current-users', users);
   }
@@ -138,6 +140,7 @@ class JamManager {
 
       this.socket.to(jam.id).emit('next-turn', nextTurn);
     } else {
+      this.socket.to(jam.id).emit('jam-over');
       clearTimeout(jam.timeout);
     }
 
