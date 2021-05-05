@@ -173,14 +173,14 @@ Lobby.propTypes = {
   onSetSettings: PropTypes.func,
   connection: PropTypes.instanceOf(Connection).isRequired,
   onPlay: PropTypes.func,
-  users: PropTypes.arrayOf(PropTypes.string).isRequired,
+  users: PropTypes.arrayOf(PropTypes.object),
   leader: PropTypes.string,
   settings: PropTypes.shape({
     title: PropTypes.string,
     bpm: PropTypes.number,
     measures: PropTypes.number,
     turnDuration: PropTypes.number,
-    instruments: PropTypes.arrayOf(PropTypes.string),
+    instruments: PropTypes.arrayOf(PropTypes.object),
   }),
 };
 
@@ -195,6 +195,7 @@ Lobby.defaultProps = {
     turnDuration: 60,
     instruments: [],
   },
+  users: [],
 };
 
 export default withAppContext(Lobby);

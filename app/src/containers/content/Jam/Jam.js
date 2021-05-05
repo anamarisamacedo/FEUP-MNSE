@@ -47,8 +47,8 @@ class Jam extends React.Component {
     this.state.connection.end();
   }
 
-  async handleSetUsername(username) {
-    const connection = await this.setupConnection(username);
+  async handleSetUsername(username, picture) {
+    const connection = await this.setupConnection(username, picture);
     this.setState({ connection, username });
   }
 
@@ -66,18 +66,18 @@ class Jam extends React.Component {
     this.setState({ hasStarted: true });
   }
 
-  async setupConnection(username) {
+  async setupConnection(username, picture) {
     let { id } = this.props.match.params;
 
     if (!id) {
       // Create default jam
       // eslint-disable-next-line react/no-access-state-in-setstate
-      const jam = await jamService.createJam(username, this.state.settings);
+      const jam = await jamService.createJam(username, picture, this.state.settings);
       this.setState({ users: jam.users });
 
       id = jam.id;
     }
-    const connection = new Connection(username, id);
+    const connection = new Connection(username, picture, id);
 
     // The line below can be uncommented for testing purposes
     // this.setState({ hasStarted: true });

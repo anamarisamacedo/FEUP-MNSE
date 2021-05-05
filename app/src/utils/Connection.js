@@ -1,18 +1,20 @@
 import { io } from 'socket.io-client';
 
 class Connection {
-  constructor(username, jamId) {
+  constructor(username, picture, jamId) {
     this.username = username;
     this.jamId = jamId;
+    this.picture = picture;
 
-    this.start(username, jamId);
+    this.start(username, picture, jamId);
   }
 
-  start(username, jamId) {
+  start(username, picture, jamId) {
     this.socket = io('http://localhost:3001', {
       reconnection: false,
       query: {
         username,
+        picture,
         jamId,
       },
     });

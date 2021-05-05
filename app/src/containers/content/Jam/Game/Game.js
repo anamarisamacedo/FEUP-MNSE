@@ -33,7 +33,7 @@ class Game extends React.Component {
     conn.socket.on('next-turn', (turn) => {
       this.setState({ currentMeasure: turn.measure, currentInstrument: turn.instrument });
 
-      if (turn.player === this.props.username) {
+      if (turn.player.username === this.props.username) {
         this.setState({ isOwnTurn: true });
       } else this.setState({ isOwnTurn: false });
 

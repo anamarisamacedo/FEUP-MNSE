@@ -41,13 +41,21 @@ withStyles((theme) => ({
   },
 }))(Badge);
 
+const avatarsPath = `${process.env.PUBLIC_URL}/assets/`;
+const avatars = [
+  `${avatarsPath}a.png`,
+  `${avatarsPath}b.png`,
+  `${avatarsPath}c.png`,
+  `${avatarsPath}d.png`,
+];
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       username: '',
-      avatarKey: Math.random(),
+      count: 0,
     };
 
     this.setAvatar = this.setAvatar.bind(this);
@@ -60,11 +68,16 @@ class Login extends React.Component {
   }
 
   handleConfirm() {
-    this.props.onSetUsername(this.state.username);
+    this.props.onSetUsername(this.state.username, avatars[this.state.count]);
   }
 
   setAvatar() {
-    this.setState({ avatarKey: Math.random() });
+    if (this.state.count < avatars.length - 1) {
+      // eslint-disable-next-line react/no-access-state-in-setstate
+      this.setState({ count: this.state.count + 1 });
+    } else {
+      this.setState({ count: 0 });
+    }
   }
 
   render() {
@@ -100,15 +113,18 @@ class Login extends React.Component {
                     horizontal: 'right',
                   }}
                   badgeContent={(
-                    <IconButton color="primary">
-                      <CachedIcon onClick={this.setAvatar} />
+                    <IconButton onClick={this.setAvatar} color="primary">
+                      <CachedIcon />
                     </IconButton>
                   )}
                 >
                   <Avatar
-                    key={this.state.avatarKey}
-                    src="https://i.pravatar.cc/300"
-                    style={{ width: '180px', height: '180px' }}
+                    src={avatars[this.state.count]}
+                    style={{
+                      width: '180px',
+                      height: '180px',
+                      borderRadius: '50%',
+                    }}
                   />
                 </Badge>
               </div>
