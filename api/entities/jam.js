@@ -17,11 +17,11 @@ class Jam {
    * @param {Number} settings.turnDuration duration of each player turn (in seconds)
    * @param {string[]} settings.instruments array of instruments names that can be used
    */
-  constructor(leader, settings) {
+  constructor(leader, picture, settings) {
     this.id = null;
     this.leader = leader;
     this.settings = settings;
-    this.users = [leader];
+    this.users = [{ username: leader, picture }];
     this.status = Statuses.CREATED;
     this.turn = 0;
     this.gamePlan = null;
@@ -30,8 +30,10 @@ class Jam {
     this.timeout = null;
   }
 
-  addUser(username) {
-    if (!this.users.includes(username)) this.users.push(username);
+  addUser(username, picture) {
+    if (!this.users.some(e => e.username === username)) {
+      this.users.push({ username, picture });
+    }
   }
 
   removeUser(username) {
@@ -96,8 +98,6 @@ class Jam {
     if (this.turn < totalTurns) {
       this.turn += 1;
     } else return null;
-
-    console.log(this.turn);
 
     return turn;
   }

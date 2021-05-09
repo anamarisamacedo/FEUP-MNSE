@@ -1,7 +1,7 @@
 import api from '../api';
 
-async function createJam(leader, settings) {
-  const res = await api.post('/jam/', { leader, settings });
+async function createJam(leader, picture, settings) {
+  const res = await api.post('/jam/', { leader, picture, settings });
 
   return res.data;
 }

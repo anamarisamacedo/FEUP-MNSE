@@ -11,6 +11,8 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import instruments from '../Game/Sequencer/instruments';
 
 function mapInstruments(instr) {
@@ -107,6 +109,7 @@ class Settings extends React.Component {
     this.handleChangeInstruments = this.handleChangeInstruments.bind(this);
     this.handleChangeBPM = this.handleChangeBPM.bind(this);
     this.handleChangeMeasures = this.handleChangeMeasures.bind(this);
+    // this.playInstrument = this.playInstrument.bind(this);
   }
 
   handleChangeJamTitle(event) {
@@ -171,7 +174,16 @@ class Settings extends React.Component {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                InputProps={{ inputProps: { min: 30, max: 180, step: 10 } }}
+                InputProps={{
+                  inputProps: {
+                    min: 30,
+                    max: 180,
+                    step: 10,
+                    onKeyDown: (event) => {
+                      event.preventDefault();
+                    },
+                  },
+                }}
                 onChange={this.handleChangeTurnTime}
               />
             ) : (
@@ -269,7 +281,15 @@ class Settings extends React.Component {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                InputProps={{ inputProps: { min: 0, max: 10 } }}
+                InputProps={{
+                  inputProps: {
+                    min: 1,
+                    max: 10,
+                    onKeyDown: (event) => {
+                      event.preventDefault();
+                    },
+                  },
+                }}
                 onChange={this.handleChangeMeasures}
               />
             ) : (

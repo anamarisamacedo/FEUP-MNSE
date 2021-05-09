@@ -25,7 +25,7 @@ class JamManager {
     const port = 3001;
 
     this.socket.on('connection', (client) => {
-      const { jamId, username } = client.handshake.query;
+      const { jamId, picture, username } = client.handshake.query;
 
       // eslint-disable-next-line no-param-reassign
       client.username = username;
@@ -40,7 +40,7 @@ class JamManager {
         client.join(`${jamId}/guests`);
       }
 
-      this.addUserToJam(username, jamId);
+      this.addUserToJam(username, picture, jamId);
       this.connectedClients.push(client);
 
       client.on('disconnect', () => {
@@ -74,15 +74,15 @@ class JamManager {
     this.jams.push(jam);
   }
 
-  addUserToJam(username, jamId) {
+  addUserToJam(username, picture, jamId) {
     const index = this.jams.findIndex((jam) => jam.id === jamId);
 
     if (index < 0) throw new JamNotFoundError();
 
     if (this.jams[index].status === Jam.Statuses.OVER) { throw new JamAlreadyOverError(); }
 
-    this.jams[index].addUser(username);
-
+    this.jams[index].addUser(username, picture);
+    
     const users = this.listUsersInJam(jamId);
     this.socket.to(jamId).emit('current-users', users);
   }
@@ -128,7 +128,6 @@ class JamManager {
     const jam = this.jams[index];
 
     const nextTurn = jam.nextTurn(true);
-    console.log(nextTurn);
 
     if (nextTurn) {
       jam.timeout = setTimeout(

@@ -4,8 +4,8 @@ const JamAlreadyOverError = require('../errors/JamAlreadyOverError');
 const ErrorMessage = require('../utils/ErrorMessage');
 
 function createJam(req, res) {
-  const { leader, settings } = req.body;
-  const jam = jamService.createJam(leader, settings);
+  const { leader, picture, settings } = req.body;
+  const jam = jamService.createJam(leader, picture, settings);
 
   return res.status(201).json(jam);
 }

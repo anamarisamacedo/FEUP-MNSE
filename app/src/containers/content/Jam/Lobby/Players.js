@@ -18,10 +18,10 @@ function Players(props) {
         {props.users.map((user) => (
           <ListItem key={user}>
             <ListItemAvatar>
-              <Avatar src="https://i.pravatar.cc/300" />
+              <Avatar src={user.picture} />
             </ListItemAvatar>
             <ListItemText
-              primary={<Typography variant="body1">{user}</Typography>}
+              primary={<Typography variant="body1">{user.username}</Typography>}
             />
           </ListItem>
         ))}
@@ -31,11 +31,11 @@ function Players(props) {
 }
 
 Players.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.string),
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
 Players.defaultProps = {
-  users: PropTypes.arrayOf(PropTypes.string),
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default withAppContext(Players);

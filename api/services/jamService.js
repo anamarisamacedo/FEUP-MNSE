@@ -1,8 +1,8 @@
 const jamManager = require('../entities/jamManager');
 const Jam = require('../entities/jam');
 
-function createJam(leader, settings) {
-  const jam = new Jam(leader, settings);
+function createJam(leader, picture, settings) {
+  const jam = new Jam(leader, picture, settings);
   jamManager.addJam(jam);
 
   return jam;
