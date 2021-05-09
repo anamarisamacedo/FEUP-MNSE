@@ -1,7 +1,9 @@
 /* eslint-disable indent */
 /* eslint-disable newline-per-chained-call */
-import { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
+import Base64Downloader from 'react-base64-downloader';
 import { create } from 'xmlbuilder';
 import { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 import instruments from '../Game/Sequencer/instruments';
@@ -21,20 +23,6 @@ function getInstrumentNotes(column, instrumentName) {
   }
 
   return instrumentNotes;
-}
-
-function displaySheetMusic(xml) {
-  const osmd = new OpenSheetMusicDisplay('osmdContainer');
-  osmd.setOptions({
-    backend: 'svg',
-    drawTitle: true,
-    // drawingParameters: "compacttight" // don't display title, composer etc., smaller margins
-  });
-  osmd
-    .load(xml)
-    .then(() => {
-      osmd.render();
-    });
 }
 
 function generateXML(song, settings) {
@@ -136,14 +124,53 @@ function generateXML(song, settings) {
     return xml;
 }
 
-function JamOver(props) {
-  useEffect(() => {
-    const xml = generateXML(props.song, props.settings);
+class JamOver extends React.Component {
+  constructor(props) {
+    super(props);
 
-    displaySheetMusic(xml);
-  }, []);
+    this.state = {
+      sheetMusicImage: '',
+    };
+  }
 
-  return <div id="osmdContainer" />;
+  componentDidMount() {
+    const xml = generateXML(this.props.song, this.props.settings);
+    this.displaySheetMusic(xml);
+  }
+
+  displaySheetMusic(xml) {
+    const osmd = new OpenSheetMusicDisplay('osmdContainer');
+    osmd.setOptions({
+      backend: 'canvas',
+      drawTitle: true,
+      pageBackgroundColor: 'white',
+    });
+    osmd
+      .load(xml)
+      .then(() => {
+        osmd.render();
+
+        // Very hacky, NEVER do this
+        const canvas = document.getElementById('osmdCanvasVexFlowBackendCanvas1');
+        const image = canvas.toDataURL('image/png');
+
+        this.setState({ sheetMusicImage: image });
+      });
+  }
+
+  render() {
+    return (
+      <div>
+        <Base64Downloader 
+          base64={this.state.sheetMusicImage}
+          downloadName={this.props.settings.title}
+        >
+          Click to download
+        </Base64Downloader>
+        <div id="osmdContainer" />
+      </div>
+      );
+  }
 }
 
 JamOver.propTypes = {

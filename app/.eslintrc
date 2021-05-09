@@ -24,6 +24,7 @@
     "localStorage": true,
     "Event": true,
     "dispatchEvent": true,
-    "addEventListener": true
+    "addEventListener": true,
+    "document": true
   }
 }
