@@ -12,16 +12,30 @@ function formatSeconds(time) {
  * @returns an object containing the pitch and octave
  */
 function parseNote(note) {
-  const pitchRegex = /[A-G][#b]*/;
+  const pitchRegex = /[A-G]/;
+  const accidentalRegex = /[#b]/;
   const octaveRegex = /[0-8]/;
 
   const pitch = note.match(pitchRegex)[0];
+  const accidental = note.match(accidentalRegex);
   const octave = note.match(octaveRegex)[0];
 
-  return { pitch, octave };
+  let semitones = 0;
+
+  if (accidental) {
+    if (accidental[0] === '#') semitones = 1;
+    else semitones = -1;
+  }
+
+  return { pitch, octave, semitones };
+}
+
+function getMatrixColumn(matrix, colIndex) {
+  return matrix.map((row) => row[colIndex]);
 }
 
 export {
   formatSeconds,
   parseNote,
+  getMatrixColumn,
 };
