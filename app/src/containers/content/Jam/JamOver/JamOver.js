@@ -63,8 +63,11 @@ function generateXML(song, settings) {
       for (let i = 0; i < song.length; i += 1) {
         const measure = song[i];
 
-        root = root.ele('measure').att('number', (i + 1).toString())
-          .ele('attributes')
+        root = root.ele('measure').att('number', (i + 1).toString());
+
+        // add attributes on first measure only
+        if (i === 0) {
+          root = root.ele('attributes')
             .ele('divisions', '4').up()
             .ele('time')
               .ele('beats', '4').up()
@@ -75,6 +78,7 @@ function generateXML(song, settings) {
               .ele('line', '4').up()
             .up()
           .up();
+        }
 
         let consecutiveRests = 0;
 
