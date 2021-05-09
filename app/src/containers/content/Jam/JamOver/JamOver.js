@@ -76,12 +76,23 @@ function generateXML(song, settings) {
             .up()
           .up();
 
+        let consecutiveRests = 0;
+
         for (let j = 0; j < measure[0].length; j += 1) {
           const col = getMatrixColumn(measure, j);
           // Notes for this voice, for this instrument
           const instrumentNotes = getInstrumentNotes(col, instrumentName);
 
           if (instrumentNotes.length > 0) {
+            if (consecutiveRests > 0) {
+              root = root.ele('note')
+                .ele('rest').up()
+                .ele('duration', consecutiveRests).up()
+                .ele('type', '16th').up()
+              .up();
+              consecutiveRests = 0;
+            }
+
             for (let k = 0; k < instrumentNotes.length; k += 1) {
               const note = instrumentNotes[k];
               root = root.ele('note');
@@ -106,11 +117,7 @@ function generateXML(song, settings) {
               .up();
             }
           } else {
-            root = root.ele('note')
-              .ele('rest').up()
-              .ele('duration', '1').up()
-              .ele('type', '16th').up()
-            .up();
+            consecutiveRests += 1;
           }
         }
         // close measure
