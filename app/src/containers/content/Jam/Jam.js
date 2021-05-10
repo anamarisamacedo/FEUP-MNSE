@@ -27,6 +27,7 @@ class Jam extends React.Component {
         turnDuration: 60,
         instruments: [],
       },
+      song: null,
       users: [],
     };
 
@@ -81,15 +82,13 @@ class Jam extends React.Component {
     }
     const connection = new Connection(username, picture, id);
 
-    // The line below can be uncommented for testing purposes
-    // this.setState({ hasStarted: true });
-
     connection.socket.on('start-jam', async () => {
       this.setState({ hasStarted: true });
     });
 
-    connection.socket.on('jam-over', () => {
-      this.setState({ isOver: true });
+    connection.socket.on('jam-over', (song) => {
+      console.log(song);
+      this.setState({ isOver: true, song });
     });
 
     connection.socket.on('current-users', (users) => {
@@ -107,7 +106,12 @@ class Jam extends React.Component {
     let toRender;
 
     if (this.state.hasStarted) {
-      toRender = <Game settings={this.state.settings} users={this.state.users} />;
+      toRender = (
+        <Game
+          settings={this.state.settings}
+          users={this.state.users}
+        />
+      );
     } else {
       toRender = (
         <Lobby
@@ -120,7 +124,15 @@ class Jam extends React.Component {
       );
     }
 
-    if (this.state.isOver) toRender = <JamOver />;
+    if (this.state.isOver) {
+      toRender = (
+        <JamOver
+          song={this.state.song}
+          settings={this.state.settings}
+          users={this.state.users}
+        />
+      );
+    }
 
     if (this.state.username) {
       return (

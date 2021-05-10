@@ -8,6 +8,9 @@ import { create } from 'xmlbuilder';
 import { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 import instruments from '../Game/Sequencer/instruments';
 import { parseNote, getMatrixColumn } from '../../../../utils/utils';
+import Players from '../Lobby/Players';
+import Panel from '../../../../components/Panel/Panel';
+import Sequencer from '../Game/Sequencer/Sequencer';
 
 function getInstrumentNotes(column, instrumentName) {
   // string representing the notes in each instrument for a given column
@@ -25,7 +28,8 @@ function getInstrumentNotes(column, instrumentName) {
   return instrumentNotes;
 }
 
-function generateXML(song, settings) {
+function generateXML(song, settings, users) {
+  console.log(users);
   let root = create('score-partwise',
       { version: '1.0' },
       { pubID: '-//Recordare//DTD MusicXML 3.1 Partwise//EN' },
@@ -134,7 +138,7 @@ class JamOver extends React.Component {
   }
 
   componentDidMount() {
-    const xml = generateXML(this.props.song, this.props.settings);
+    const xml = generateXML(this.props.song, this.props.settings, this.props.users);
     this.displaySheetMusic(xml);
   }
 
@@ -159,16 +163,43 @@ class JamOver extends React.Component {
   }
 
   render() {
+    if (!this.props.song) return <div />;
+
     return (
-      <div>
-        <Base64Downloader 
-          base64={this.state.sheetMusicImage}
-          downloadName={this.props.settings.title}
-        >
-          Click to download
-        </Base64Downloader>
-        <div id="osmdContainer" />
-      </div>
+      <Grid container spacing={1} alignItems="stretch">
+        <Grid item xs={2} style={{ minHeight: '80vh' }}>
+          <Panel>
+            <Players users={this.props.users} />
+          </Panel>
+        </Grid>
+        <Grid item xs={8} style={{ height: '80vh' }}>
+          <Panel style={{ justifyContent: 'space-evenly' }}>
+            <Sequencer
+              instrumentId="testSynth"
+              song={this.props.song}
+              currentMeasure={this.props.settings.measures - 1}
+              resetMeasure={0}
+              totalMeasures={this.props.settings.measures}
+              bpm={this.props.settings.bpm}
+            />
+          </Panel>
+        </Grid>
+        <Grid item xs={2} style={{ minHeight: '80vh' }}>
+          <Panel>
+            <Base64Downloader
+              base64={this.state.sheetMusicImage}
+              downloadName={this.props.settings.title}
+            >
+              Click to download
+            </Base64Downloader>
+          </Panel>
+        </Grid>
+        <Grid item xs={12} style={{ minHeight: '10vh' }} />
+        <Grid item xs={2} />
+        <Grid item xs={8}>
+          <div id="osmdContainer" />
+        </Grid>
+      </Grid>
       );
   }
 }
@@ -182,7 +213,12 @@ JamOver.propTypes = {
     turnDuration: PropTypes.number,
     instruments: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
-  users: PropTypes.arrayOf(PropTypes.string).isRequired,
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      username: PropTypes.string,
+      picture: PropTypes.picture,
+    })
+  ).isRequired,
 };
 
 export default JamOver;

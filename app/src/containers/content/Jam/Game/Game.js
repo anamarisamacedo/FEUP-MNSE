@@ -84,6 +84,7 @@ class Game extends React.Component {
               onUpdateGrid={this.handleGridUpdate}
               song={this.state.song}
               currentMeasure={this.state.currentMeasure}
+              resetMeasure={this.state.currentMeasure}
               totalMeasures={this.props.settings.measures}
               bpm={this.props.settings.bpm}
             />

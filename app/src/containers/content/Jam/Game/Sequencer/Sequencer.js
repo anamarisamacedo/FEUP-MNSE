@@ -37,8 +37,6 @@ class Sequencer extends React.Component {
     this.instrument = instruments[props.instrumentId];
 
     this.playingMeasure = 0;
-    // Measure to reset to when playback stops
-    this.RESET_MEASURE = this.props.currentMeasure;
 
     this.handleClick = this.handleClick.bind(this);
     this.togglePlay = this.togglePlay.bind(this);
@@ -88,7 +86,7 @@ class Sequencer extends React.Component {
   async togglePlay() {
     if (this.state.isPlaying) {
       // Reset playing measure
-      this.playingMeasure = this.RESET_MEASURE;
+      this.playingMeasure = this.props.resetMeasure;
 
       Tone.Transport.stop();
       this.updateSequence();
@@ -135,6 +133,7 @@ class Sequencer extends React.Component {
   }
 
   updatePlayingMeasure(measure) {
+    console.log('playing: ' + measure);
     this.playingMeasure = measure;
 
     this.drawNotes(measure);
@@ -294,6 +293,7 @@ Sequencer.propTypes = {
   instrumentId: PropTypes.string.isRequired,
   song: PropTypes.arrayOf(PropTypes.array),
   currentMeasure: PropTypes.number.isRequired,
+  resetMeasure: PropTypes.number,
   bpm: PropTypes.number.isRequired,
 };
 
@@ -303,6 +303,7 @@ Sequencer.defaultProps = {
   gridWidth: 1300,
   gridHeight: 600,
   onUpdateGrid: (() => {}),
+  resetMeasure: 0,
   song: null,
 };
 
