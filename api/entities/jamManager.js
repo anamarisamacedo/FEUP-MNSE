@@ -127,14 +127,14 @@ class JamManager {
     const index = this.jams.findIndex((jam) => jam.id === jamId);
     const jam = this.jams[index];
 
-    const nextTurn = jam.nextTurn(true);
+    const nextTurn = jam.nextTurn();
 
     if (nextTurn) {
       jam.timeout = setTimeout(
         this.requestSongData.bind(this),
         jam.settings.turnDuration * 1000,
         jam,
-        nextTurn.player,
+        nextTurn.player.username,
       );
 
       this.socket.to(jam.id).emit('next-turn', nextTurn);
