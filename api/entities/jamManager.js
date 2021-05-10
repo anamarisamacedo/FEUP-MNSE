@@ -139,7 +139,7 @@ class JamManager {
 
       this.socket.to(jam.id).emit('next-turn', nextTurn);
     } else {
-      this.socket.to(jam.id).emit('jam-over');
+      this.socket.to(jam.id).emit('jam-over', jam.song);
       clearTimeout(jam.timeout);
     }
 
