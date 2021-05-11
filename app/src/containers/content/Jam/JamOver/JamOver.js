@@ -3,7 +3,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import Base64Downloader from 'react-base64-downloader';
+import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import { triggerBase64Download } from 'react-base64-downloader';
 import { create } from 'xmlbuilder';
 import { OpenSheetMusicDisplay } from 'opensheetmusicdisplay';
 import instruments from '../Game/Sequencer/instruments';
@@ -134,12 +138,28 @@ class JamOver extends React.Component {
 
     this.state = {
       sheetMusicImage: '',
+      exportFormat: 'image/png',
     };
+
+    this.handleChangeExportFormat = this.handleChangeExportFormat.bind(this);
   }
 
   componentDidMount() {
     const xml = generateXML(this.props.song, this.props.settings, this.props.users);
     this.displaySheetMusic(xml);
+  }
+
+  handleChangeExportFormat(event) {
+    this.setState({ exportFormat: event.target.value });
+    this.updateSheetMusicImage(event.target.value);
+  }
+
+  updateSheetMusicImage(format) {
+    // Very hacky, NEVER do this
+    const canvas = document.getElementById('osmdCanvasVexFlowBackendCanvas1');
+
+    const image = canvas.toDataURL(format);
+    this.setState({ sheetMusicImage: image });
   }
 
   displaySheetMusic(xml) {
@@ -154,11 +174,7 @@ class JamOver extends React.Component {
       .then(() => {
         osmd.render();
 
-        // Very hacky, NEVER do this
-        const canvas = document.getElementById('osmdCanvasVexFlowBackendCanvas1');
-        const image = canvas.toDataURL('image/png');
-
-        this.setState({ sheetMusicImage: image });
+        this.updateSheetMusicImage(this.state.exportFormat);
       });
   }
 
@@ -186,12 +202,27 @@ class JamOver extends React.Component {
         </Grid>
         <Grid item xs={2} style={{ minHeight: '80vh' }}>
           <Panel>
-            <Base64Downloader
-              base64={this.state.sheetMusicImage}
-              downloadName={this.props.settings.title}
+            <div style={{ fontWeight: 'bold', marginTop: '2vh', marginBottom: '2vh' }}>
+              Export Sheet Music
+            </div>
+            <InputLabel id="selectExportFormat" style={{ color: 'white '}}>Format</InputLabel>
+            <Select
+              labelId="selectExportFormat"
+              style={{ marginBottom: '2vh' }}
+              value={this.state.exportFormat}
+              onChange={this.handleChangeExportFormat}
             >
-              Click to download
-            </Base64Downloader>
+              <MenuItem style={{ color: 'black' }} value="image/png">.png</MenuItem>
+              <MenuItem style={{ color: 'black' }} value="image/jpeg">.jpeg</MenuItem>
+            </Select>
+            <Button
+              variant="contained"
+              onClick={() => triggerBase64Download(
+              this.state.sheetMusicImage, this.props.settings.title,
+            )}
+            >
+              Export
+            </Button>
           </Panel>
         </Grid>
         <Grid item xs={12} style={{ minHeight: '10vh' }} />
@@ -217,7 +248,7 @@ JamOver.propTypes = {
     PropTypes.shape({
       username: PropTypes.string,
       picture: PropTypes.picture,
-    })
+    }),
   ).isRequired,
 };
 
