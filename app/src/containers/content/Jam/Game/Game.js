@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import Panel from '../../../../components/Panel/Panel';
 import Sequencer from './Sequencer/Sequencer';
 import TopBar from './TopBar/TopBar';
@@ -8,6 +10,7 @@ import Sidebar from './Sidebar/Sidebar';
 import BottomBar from './BottomBar/BottomBar';
 import Connection from '../../../../utils/Connection';
 import { withAppContext } from '../../../../utils/AppContext';
+import logo from '../../../../logo.png';
 
 class Game extends React.Component {
   constructor(props) {
@@ -15,6 +18,7 @@ class Game extends React.Component {
 
     this.state = {
       isOwnTurn: false,
+      currentPlayer: '',
       currentMeasure: 0,
       currentInstrument: 'testSynth',
       song: [],
@@ -31,7 +35,11 @@ class Game extends React.Component {
     const conn = this.props.connection;
 
     conn.socket.on('next-turn', (turn) => {
-      this.setState({ currentMeasure: turn.measure, currentInstrument: turn.instrument });
+      this.setState({
+        currentMeasure: turn.measure,
+        currentInstrument: turn.instrument,
+        currentPlayer: turn.player,
+      });
 
       if (turn.player.username === this.props.username) {
         this.setState({ isOwnTurn: true });
@@ -70,7 +78,35 @@ class Game extends React.Component {
   }
 
   render() {
-    if (!this.state.isOwnTurn) return <span>Waiting for turn...</span>;
+    if (!this.state.isOwnTurn) {
+      return (
+        <Grid container spacing={4} style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>
+          <Grid item xs={12} style={{ marginTop: '40px' }}>
+            <img src={logo} alt="Logo" width="auto" height="100" />
+            <br />
+            <br />
+            <br />
+            <br />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography align="center" variant="h4">
+              Waiting for turn...
+            </Typography>
+            <br />
+            <br />
+            <br />
+            <br />
+          </Grid>
+          <Typography variant="h6">
+            Current turn:
+            {' '}
+            {this.state.currentPlayer.username}
+            {'  '}
+          </Typography>
+          <Avatar src={this.state.currentPlayer.picture} />
+        </Grid>
+      );
+    }
 
     return (
       <Grid container spacing={1} alignItems="stretch">

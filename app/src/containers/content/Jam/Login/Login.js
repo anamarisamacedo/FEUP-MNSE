@@ -83,17 +83,11 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <Grid container spacing={1} style={{ textAlign: 'center' }}>
+        <Grid container spacing={4} style={{ textAlign: 'center' }}>
           <Grid item xs={12} style={{ marginTop: '40px' }}>
-            <img src={logo} alt="Logo" width="auto" height="60" />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h4" styles={{ fontFamily: 'Galada' }}>
-              Jam It!
-            </Typography>
+            <img src={logo} alt="Logo" width="auto" height="100" />
           </Grid>
         </Grid>
-        <br />
         <form noValidate autoComplete="off">
           <Grid
             container

@@ -27,7 +27,7 @@ function Home() {
         >
           <img src={logo} alt="Logo" width="auto" height="150px" />
           <br />
-          <h3 fontFamily="Galada">Jam It!</h3>
+          <br />
           <br />
           <br />
           <Button

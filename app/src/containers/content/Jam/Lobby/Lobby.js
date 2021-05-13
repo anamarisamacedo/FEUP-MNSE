@@ -55,21 +55,13 @@ class Lobby extends React.Component {
           <Grid item xs sm={6} style={{ marginTop: '1%', textAlign: 'center' }}>
             <Grid container spacing={1} direction="column">
               <Grid item xs>
-                <img src={logo} alt="Logo" width="auto" height="50" />
-              </Grid>
-              <Grid item xs>
-                <Typography
-                  variant="subtitle1"
-                  styles={{ fontFamily: 'Galada' }}
-                >
-                  Jam It!
-                </Typography>
+                <img src={logo} alt="Logo" width="auto" height="90" />
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Grid container spacing={1} direction="row" alignItems="center">
-          <Grid item xs sm={6} styles={{ textAlign: 'center' }}>
+        <Grid container spacing={1} direction="row" alignItems="right">
+          <Grid item xs sm={6} styles={{ textAlign: 'right' }}>
             <Panel
               className={styles.Panel}
               style={{ height: '65vh', width: '45vh', textAlign: 'center' }}
@@ -77,7 +69,7 @@ class Lobby extends React.Component {
               <Players users={this.props.users} />
             </Panel>
           </Grid>
-          <Grid item xs sm={6}>
+          <Grid item xs sm={5}>
             <Grid container spacing={1} direction="column" alignItems="center">
               <Grid item xs>
                 {this.state.leader ? (
