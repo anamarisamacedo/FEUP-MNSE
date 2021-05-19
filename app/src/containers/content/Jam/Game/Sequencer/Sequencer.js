@@ -122,18 +122,23 @@ class Sequencer extends React.Component {
 
     const grid = this.props.song[this.playingMeasure];
     for (let row = 0; row < this.props.nRows; row += 1) {
-      if (grid[row][col].length > 0) {
-        const note = this.instrument.notes[this.props.nRows - row - 1];
+      for (const instrumentId of grid[row][col]) {
+        let note = null;
 
-        for (const instrumentId of grid[row][col]) {
+        if (instruments[instrumentId].notes.length > 0) {
+          note = instruments[instrumentId].notes[this.props.nRows - row - 1];
+        }
+
+        if (note) {
           instruments[instrumentId].triggerAttackRelease(note, this.subdivision, time);
+        } else {
+          instruments[instrumentId].triggerAttackRelease(this.subdivision, time);
         }
       }
     }
   }
 
   updatePlayingMeasure(measure) {
-    console.log('playing: ' + measure);
     this.playingMeasure = measure;
 
     this.drawNotes(measure);
