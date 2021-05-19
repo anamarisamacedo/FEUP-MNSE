@@ -259,7 +259,6 @@ class Sequencer extends React.Component {
   }
 
   addNote(x, y) {
-    console.log(this.instrument.id)
     if (this.instrument instanceof Tone.PolySynth || canAddNote(this.grid, x, this.instrument.id)) {
       this.grid[y][x].push(this.props.instrumentId);
       this.updateSequence();
