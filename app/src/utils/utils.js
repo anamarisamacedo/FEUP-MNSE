@@ -37,16 +37,15 @@ function getMatrixColumn(matrix, colIndex) {
 /**
  * Checks if a monophonic instrument note can be added to the grid since
  * only 1 note per column is allowed for these instruments
- * @param {*} matrix 
- * @param {*} colIndex 
- * @param {*} instrumentId 
- * @returns 
+ * @param {*} matrix a matrix
+ * @param {*} colIndex column index
+ * @param {*} instrumentId id of the instrument
+ * @returns true if instrumentId isn't found in the specified column, false otherwise
  */
 function canAddNote(matrix, colIndex, instrumentId) {
   const col = getMatrixColumn(matrix, colIndex);
 
   for (const cell of col) {
-    console.log(`${cell} ${cell.includes(instrumentId)}`);
     if (cell.includes(instrumentId)) return false;
   }
 
@@ -57,5 +56,5 @@ export {
   formatSeconds,
   parseNote,
   getMatrixColumn,
-  canAddNote
+  canAddNote,
 };
