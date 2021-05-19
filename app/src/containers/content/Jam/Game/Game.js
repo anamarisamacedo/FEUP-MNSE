@@ -103,7 +103,9 @@ class Game extends React.Component {
             {this.state.currentPlayer.username}
             {'  '}
           </Typography>
-          <Avatar src={this.state.currentPlayer.picture} />
+          <a style={{ marginLeft: '.5rem' }}>
+            <Avatar src={this.state.currentPlayer.picture} />
+          </a>
         </Grid>
       );
     }

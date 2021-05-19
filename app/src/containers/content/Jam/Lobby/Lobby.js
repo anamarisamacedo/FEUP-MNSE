@@ -64,7 +64,7 @@ class Lobby extends React.Component {
           <Grid item xs sm={6} styles={{ textAlign: 'right' }}>
             <Panel
               className={styles.Panel}
-              style={{ height: '65vh', width: '45vh', textAlign: 'center' }}
+              style={{ height: '65vh', width: '45vh', textAlign: 'center', marginLeft: '20%' }}
             >
               <Players users={this.props.users} />
             </Panel>
