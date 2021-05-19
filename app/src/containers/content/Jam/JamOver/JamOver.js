@@ -2,6 +2,7 @@
 /* eslint-disable newline-per-chained-call */
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as Tone from 'tone';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
@@ -61,6 +62,19 @@ function generateXML(song, settings, users) {
 
         root = root.ele('measure').att('number', (i + 1).toString());
 
+        let line = null;
+
+        switch (instruments[instrumentName].clef) {
+          case 'F':
+            line = '4';
+            break;
+          case 'G':
+            line = '2';
+            break;
+          default:
+            break;
+        }
+
         // add attributes on first measure only
         if (i === 0) {
           root = root.ele('attributes')
@@ -70,8 +84,8 @@ function generateXML(song, settings, users) {
               .ele('beat-type', '4').up()
             .up()
             .ele('clef')
-              .ele('sign', 'F').up()
-              .ele('line', '4').up()
+              .ele('sign', instruments[instrumentName].clef).up()
+              .ele('line', line).up()
             .up()
           .up();
         }
@@ -100,16 +114,25 @@ function generateXML(song, settings, users) {
               // create a chord if instrument is playing more than 1 note at a time
               if (instrumentNotes.length > 1 && k > 0) root = root.ele('chord').up();
 
-              const { pitch, octave, semitones } = parseNote(note);
+              // Currently only percussion instruments are monophonic so this is fine
+              // TODO: add a type to each instrument and check if percussion based on that type
+              if (instruments[instrumentName] instanceof Tone.PolySynth) {
+                const { pitch, octave, semitones } = parseNote(note);
 
-              root = root.ele('pitch')
-                .ele('step', pitch).up();
+                root = root.ele('pitch')
+                  .ele('step', pitch).up();
 
-              if (semitones) root = root.ele('alter', semitones).up();
+                if (semitones) root = root.ele('alter', semitones).up();
 
-              root = root.ele('octave', octave).up()
-              // close pitch
-              .up();
+                root = root.ele('octave', octave).up()
+                // close pitch
+                .up();
+              } else {
+                root = root.ele('unpitched')
+                  .ele('display-step', 'E').up()
+                  .ele('display-octave', '4').up()
+                .up();
+              }
               // all notes are 16th notes
               root = root.ele('duration', '1').up()
               .ele('type', '16th').up()
@@ -205,7 +228,7 @@ class JamOver extends React.Component {
             <div style={{ fontWeight: 'bold', marginTop: '2vh', marginBottom: '2vh' }}>
               Export Sheet Music
             </div>
-            <InputLabel id="selectExportFormat" style={{ color: 'white '}}>Format</InputLabel>
+            <InputLabel id="selectExportFormat" style={{ color: 'white ' }}>Format</InputLabel>
             <Select
               labelId="selectExportFormat"
               style={{ marginBottom: '2vh' }}
