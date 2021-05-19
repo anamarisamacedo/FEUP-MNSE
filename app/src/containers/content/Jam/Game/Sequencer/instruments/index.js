@@ -45,7 +45,7 @@ kick.name = 'Kick Drum';
 snare.name = 'Snare Drum';
 
 // Set instrument clef
-fatSquare.clef = 'G';
+fatSquare.clef = 'F';
 squareBass.clef = 'F';
 sineTooth.clef = 'G';
 xylophone.clef = 'G';
