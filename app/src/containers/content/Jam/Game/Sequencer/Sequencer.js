@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as Tone from 'tone';
 import instruments from './instruments';
 import PlayButton from './PlayButton';
+import { canAddNote } from '../../../../../utils/utils';
 
 class Sequencer extends React.Component {
   constructor(props) {
@@ -258,11 +259,12 @@ class Sequencer extends React.Component {
   }
 
   addNote(x, y) {
-    this.grid[y][x].push(this.props.instrumentId);
-
-    this.updateSequence();
-
-    this.fillCell(x, y, null, this.props.currentMeasure);
+    console.log(this.instrument.id)
+    if (this.instrument instanceof Tone.PolySynth || canAddNote(this.grid, x, this.instrument.id)) {
+      this.grid[y][x].push(this.props.instrumentId);
+      this.updateSequence();
+      this.fillCell(x, y, null, this.props.currentMeasure);
+    }
   }
 
   removeNote(x, y) {
