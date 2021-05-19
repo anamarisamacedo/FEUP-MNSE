@@ -17,15 +17,15 @@ import Players from '../Lobby/Players';
 import Panel from '../../../../components/Panel/Panel';
 import Sequencer from '../Game/Sequencer/Sequencer';
 
-function getInstrumentNotes(column, instrumentName) {
+function getInstrumentNotes(column, instrumentId) {
   // string representing the notes in each instrument for a given column
   const instrumentNotes = [];
 
   for (let i = 0; i < column.length; i += 1) {
     const instrumentsInCell = column[i];
 
-    if (instrumentsInCell.includes(instrumentName)) {
-      const note = instruments[instrumentName].notes[i];
+    if (instrumentsInCell.includes(instrumentId)) {
+      const note = instruments[instrumentId].notes[i];
       instrumentNotes.push(note);
     }
   }
@@ -45,17 +45,17 @@ function generateXML(song, settings, users) {
       .up()
       .ele('part-list');
 
-    for (const instrumentName of settings.instruments) {
-      root = root.ele('score-part').att('id', instrumentName)
-        .ele('part-name', instrumentName).up()
+    for (const instrumentId of settings.instruments) {
+      root = root.ele('score-part').att('id', instrumentId)
+        .ele('part-name', instruments[instrumentId].name).up()
         // close score-part
       .up();
     }
     // close part-list
     root = root.up();
 
-    for (const instrumentName of settings.instruments) {
-      root = root.ele('part').att('id', instrumentName);
+    for (const instrumentId of settings.instruments) {
+      root = root.ele('part').att('id', instrumentId);
 
       for (let i = 0; i < song.length; i += 1) {
         const measure = song[i];
@@ -64,7 +64,7 @@ function generateXML(song, settings, users) {
 
         let line = null;
 
-        switch (instruments[instrumentName].clef) {
+        switch (instruments[instrumentId].clef) {
           case 'F':
             line = '4';
             break;
@@ -84,7 +84,7 @@ function generateXML(song, settings, users) {
               .ele('beat-type', '4').up()
             .up()
             .ele('clef')
-              .ele('sign', instruments[instrumentName].clef).up()
+              .ele('sign', instruments[instrumentId].clef).up()
               .ele('line', line).up()
             .up()
           .up();
@@ -95,7 +95,7 @@ function generateXML(song, settings, users) {
         for (let j = 0; j < measure[0].length; j += 1) {
           const col = getMatrixColumn(measure, j);
           // Notes for this voice, for this instrument
-          const instrumentNotes = getInstrumentNotes(col, instrumentName);
+          const instrumentNotes = getInstrumentNotes(col, instrumentId);
 
           if (instrumentNotes.length > 0) {
             if (consecutiveRests > 0) {
@@ -116,7 +116,7 @@ function generateXML(song, settings, users) {
 
               // Currently only percussion instruments are monophonic so this is fine
               // TODO: add a type to each instrument and check if percussion based on that type
-              if (instruments[instrumentName] instanceof Tone.PolySynth) {
+              if (instruments[instrumentId] instanceof Tone.PolySynth) {
                 const { pitch, octave, semitones } = parseNote(note);
 
                 root = root.ele('pitch')
