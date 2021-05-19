@@ -34,7 +34,6 @@ function getInstrumentNotes(column, instrumentId) {
 }
 
 function generateXML(song, settings, users) {
-  console.log(users);
   let root = create('score-partwise',
       { version: '1.0' },
       { pubID: '-//Recordare//DTD MusicXML 3.1 Partwise//EN' },
@@ -214,7 +213,8 @@ class JamOver extends React.Component {
         <Grid item xs={8} style={{ height: '80vh' }}>
           <Panel style={{ justifyContent: 'space-evenly' }}>
             <Sequencer
-              instrumentId="testSynth"
+              // dummy instrument
+              instrumentId="fatSquare"
               song={this.props.song}
               currentMeasure={this.props.settings.measures - 1}
               resetMeasure={0}
