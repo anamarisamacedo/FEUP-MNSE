@@ -11,6 +11,7 @@ import BottomBar from './BottomBar/BottomBar';
 import Connection from '../../../../utils/Connection';
 import { withAppContext } from '../../../../utils/AppContext';
 import logo from '../../../../logo.png';
+import instruments from './Sequencer/instruments';
 
 class Game extends React.Component {
   constructor(props) {
@@ -126,7 +127,7 @@ class Game extends React.Component {
           </Panel>
         </Grid>
         <BottomBar
-          currentInstrument={this.state.currentInstrument}
+          currentInstrument={instruments[this.state.currentInstrument].name}
           bpm={this.props.settings.bpm}
           timeLeft={this.state.timeLeft}
         />
