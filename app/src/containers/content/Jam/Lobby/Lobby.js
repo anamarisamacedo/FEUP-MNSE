@@ -110,12 +110,12 @@ class Lobby extends React.Component {
                     container
                     spacing={10}
                     direction="row"
-                    alignItems="center"
+                    alignItems="right"
                   >
-                    <Grid item xs sm={6}>
+                    <Grid item xs sm={8}>
                       <Grid
                         container
-                        spacing={1}
+                        spacing={0}
                         direction="column"
                         alignItems="center"
                       >
@@ -141,7 +141,7 @@ class Lobby extends React.Component {
                         </Grid>
                       </Grid>
                     </Grid>
-                    <Grid item xs sm={6}>
+                    <Grid item xs sm={4}>
                       <Button
                         variant="contained"
                         endIcon={<PlayArrowOutlinedIcon color="secondary" />}
