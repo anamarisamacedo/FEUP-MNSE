@@ -25,7 +25,7 @@ class Sequencer extends React.Component {
 
     this.backgroundColor = '#F4F2F3';
     this.lineColor = '#06070E';
-    this.playHeadColor = 'rgba(255, 0, 0, 0.5)';
+    this.playHeadColor = 'rgba(171, 171, 171, 0.5)';
 
     // =====================================================
 
