@@ -5,9 +5,9 @@ import { formatSeconds } from '../../../../../utils/utils';
 
 function BottomBar(props) {
   return (
-    <Grid container spacing={1}>
+    <Grid container>
 
-      <Grid item container direction="column" xs={2} spacing={2} justify="center">
+      <Grid item container direction="column" xs={2} justify="flex-start">
         <Grid item style={{ textAlign: 'center' }}>
           <Typography variant="h4" color="textSecondary" style={{ fontWeight: 'bold' }}>
             Instrument
@@ -20,7 +20,7 @@ function BottomBar(props) {
         </Grid>
       </Grid>
 
-      <Grid item container direction="column" xs={4} spacing={2} justify="center">
+      <Grid item container direction="column" xs={4} justify="flex-start">
         <Grid item style={{ textAlign: 'center' }}>
           <Typography variant="h4" color="textSecondary" style={{ fontWeight: 'bold' }}>
             Tempo

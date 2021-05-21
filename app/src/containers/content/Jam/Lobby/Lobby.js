@@ -41,13 +41,12 @@ class Lobby extends React.Component {
   render() {
     return (
       <div>
-        <Grid container spacing={3} direction="row">
+        <Grid container direction="row">
           <Grid item xs sm={3} style={{ marginTop: '1%', marginLeft: '1%' }}>
             <Button
               variant="contained"
               startIcon={<PlayArrowOutlinedIcon color="secondary" className={styles.back} />}
               href="/jam"
-
             >
               Back
             </Button>
@@ -64,20 +63,22 @@ class Lobby extends React.Component {
           <Grid item xs sm={6} styles={{ textAlign: 'right' }}>
             <Panel
               className={styles.Panel}
-              style={{ height: '65vh', width: '45vh', textAlign: 'center', marginLeft: '20%' }}
+              style={{
+                height: '65vh', width: '45vh', textAlign: 'center', marginLeft: '20%',
+              }}
             >
               <Players users={this.props.users} />
             </Panel>
           </Grid>
+          <Grid item xs sm={1} />
           <Grid item xs sm={5}>
             <Grid container spacing={1} direction="column" alignItems="center">
-              <Grid item xs>
+              <Grid item xs style={{ marginRight: '5px' }}>
                 {this.state.leader ? (
                   <Panel
                     className={styles.Panel}
                     style={{
                       height: '60vh',
-                      width: '100vh',
                       textAlign: 'center',
                     }}
                   >

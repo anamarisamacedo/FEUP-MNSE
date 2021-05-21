@@ -80,30 +80,22 @@ class Game extends React.Component {
   render() {
     if (!this.state.isOwnTurn) {
       return (
-        <Grid container spacing={4} style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>
+        <Grid container style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <Grid item xs={12} style={{ marginTop: '40px' }}>
             <img src={logo} alt="Logo" width="auto" height="100" />
-            <br />
-            <br />
-            <br />
-            <br />
           </Grid>
           <Grid item xs={12}>
             <Typography align="center" variant="h4">
               Waiting for turn...
             </Typography>
-            <br />
-            <br />
-            <br />
-            <br />
           </Grid>
-          <Typography variant="h6">
+          <Typography variant="h6" style={{ marginTop: '-30vh' }}>
             Current turn:
             {' '}
             {this.state.currentPlayer.username}
             {'  '}
           </Typography>
-          <a style={{ marginLeft: '.5rem' }}>
+          <a style={{ marginLeft: '.5rem', marginTop: '-30vh' }}>
             <Avatar src={this.state.currentPlayer.picture} />
           </a>
         </Grid>
@@ -133,13 +125,11 @@ class Game extends React.Component {
             <Sidebar users={this.props.users} />
           </Panel>
         </Grid>
-        <Grid item xs={12} style={{ height: '5vh' }}>
-          <BottomBar
-            currentInstrument={this.state.currentInstrument}
-            bpm={this.props.settings.bpm}
-            timeLeft={this.state.timeLeft}
-          />
-        </Grid>
+        <BottomBar
+          currentInstrument={this.state.currentInstrument}
+          bpm={this.props.settings.bpm}
+          timeLeft={this.state.timeLeft}
+        />
       </Grid>
     );
   }

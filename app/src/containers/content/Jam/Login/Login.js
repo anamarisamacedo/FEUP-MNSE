@@ -82,8 +82,68 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
-        <Grid container spacing={4} style={{ textAlign: 'center' }}>
+      <>
+        <Grid container style={{ textAlign: 'center', alignItems: 'flex-start', justifyContent: 'center' }}>
+          <Grid item xs={12} style={{ marginTop: '40px' }}>
+            <img src={logo} alt="Logo" width="auto" height="100" />
+          </Grid>
+
+          <form noValidate autoComplete="off">
+            <Grid container spacing={4} style={{ textAlign: 'center', justifyContent: 'center' }}>
+              <Grid item>
+                <Badge
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  badgeContent={(
+                    <IconButton onClick={this.setAvatar} color="primary">
+                      <CachedIcon />
+                    </IconButton>
+                  )}
+                >
+                  <Avatar
+                    src={avatars[this.state.count]}
+                    style={{
+                      width: '180px',
+                      height: '180px',
+                      borderRadius: '50%',
+                    }}
+                  />
+                </Badge>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  id="outlined-basic"
+                  label="Nickname"
+                  placeholder="Nickname"
+                  required
+                  variant="outlined"
+                  value={this.state.username}
+                  onChange={this.handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  endIcon={<PlayArrowOutlinedIcon color="secondary" />}
+                  onClick={this.handleConfirm}
+                >
+                  Confirm
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Grid>
+      </>
+    );
+    /*
+    return (
+      <>
+        <Grid container spacing={4} style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <Grid item xs={12} style={{ marginTop: '40px' }}>
             <img src={logo} alt="Logo" width="auto" height="100" />
           </Grid>
@@ -145,8 +205,9 @@ class Login extends React.Component {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </>
     );
+    */
   }
 }
 

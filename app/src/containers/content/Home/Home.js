@@ -9,45 +9,43 @@ import '@fontsource/galada';
 
 function Home() {
   return (
-    <div>
+    <Grid
+      container
+      spacing={1}
+      styles={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Grid
-        container
-        spacing={1}
-        styles={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        item
+        xs={12}
+        sm={6}
+        style={{ textAlign: 'center', marginTop: '10%' }}
       >
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          style={{ textAlign: 'center', marginTop: '10%' }}
+        <img src={logo} alt="Logo" width="auto" height="150px" />
+        <br />
+        <br />
+        <br />
+        <br />
+        <Button
+          href="/jam"
+          variant="contained"
+          endIcon={<PlayArrowOutlinedIcon color="secondary" />}
         >
-          <img src={logo} alt="Logo" width="auto" height="150px" />
-          <br />
-          <br />
-          <br />
-          <br />
-          <Button
-            href="/jam"
-            variant="contained"
-            endIcon={<PlayArrowOutlinedIcon color="secondary" />}
-          >
-            Create Jam
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={6} style={{ marginTop: '5%' }}>
-          <Panel
-            className={styles.Panel}
-            style={{ height: '77vh', width: '74vh', textAlign: 'center' }}
-          >
-            <HowToPlay />
-          </Panel>
-        </Grid>
+          Create Jam
+        </Button>
       </Grid>
-    </div>
+      <Grid item xs={12} sm={6} style={{ marginTop: '5%' }}>
+        <Panel
+          className={styles.Panel}
+          style={{ height: '77vh', width: '74vh', textAlign: 'center' }}
+        >
+          <HowToPlay />
+        </Panel>
+      </Grid>
+    </Grid>
   );
 }
 
