@@ -30,7 +30,7 @@ function HowToPlay() {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body1" style={{ flex: 4 }}>
-            4. Download the sheet
+            5. Download the sheet
           </Typography>
         </Grid>
       </Grid>
