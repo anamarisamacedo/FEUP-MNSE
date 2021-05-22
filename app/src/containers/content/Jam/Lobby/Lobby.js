@@ -45,35 +45,37 @@ class Lobby extends React.Component {
           <Grid item xs sm={3} style={{ marginTop: '1%', marginLeft: '1%' }}>
             <Button
               variant="contained"
-              startIcon={<PlayArrowOutlinedIcon color="secondary" className={styles.back} />}
+              startIcon={(
+                <PlayArrowOutlinedIcon
+                  color="secondary"
+                  className={styles.back}
+                />
+              )}
               href="/jam"
             >
               Back
             </Button>
           </Grid>
           <Grid item xs sm={6} style={{ marginTop: '1%', textAlign: 'center' }}>
-            <Grid container spacing={1} direction="column">
-              <Grid item xs>
-                <img src={logo} alt="Logo" width="auto" height="90" />
-              </Grid>
-            </Grid>
+            <img src={logo} alt="Logo" width="auto" height="90" />
           </Grid>
         </Grid>
-        <Grid container spacing={1} direction="row" alignItems="right">
-          <Grid item xs sm={6} styles={{ textAlign: 'right' }}>
+        <Grid container direction="row" alignItems="right">
+          <Grid item xs sm={6}>
             <Panel
               className={styles.Panel}
               style={{
-                height: '65vh', width: '45vh', textAlign: 'center', marginLeft: '20%',
+                height: '65vh',
+                width: '45vh',
+                marginLeft: '20%',
               }}
             >
               <Players users={this.props.users} />
             </Panel>
           </Grid>
-          <Grid item xs sm={1} />
-          <Grid item xs sm={5}>
+          <Grid item xs sm={6}>
             <Grid container spacing={1} direction="column" alignItems="center">
-              <Grid item xs style={{ marginRight: '5px' }}>
+              <Grid item xs style={{ marginRight: '1%' }}>
                 {this.state.leader ? (
                   <Panel
                     className={styles.Panel}
@@ -93,7 +95,6 @@ class Lobby extends React.Component {
                     className={styles.Panel}
                     style={{
                       height: '70vh',
-                      width: '100vh',
                       textAlign: 'center',
                     }}
                   >
@@ -113,7 +114,7 @@ class Lobby extends React.Component {
                     direction="row"
                     alignItems="right"
                   >
-                    <Grid item xs sm={8}>
+                    <Grid item xs sm={6}>
                       <Grid
                         container
                         spacing={0}
