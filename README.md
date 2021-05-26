@@ -1,46 +1,30 @@
 # Jam It!
 
-### Overview
+## Overview
 
-Jam It! is a solution for people who want to produce music together with their friends and have fun at the same time. It is a web application in which people can create music together at real-time. Users join lobbies and take turns writing sections of the song. When they're done, they can export their work to several formats and keep it for themselves.
+Jam It! is a solution for people who want to make music together with their friends and have fun at the same time. It is a web application in which people can create music together at real-time. Users join lobbies and take turns writing sections of the song. When they're done, they can export their work to several formats and keep it for themselves.
 
-### Types of Media
-The application uses different types of media, such as:
-  * Audio (the several sounds played by the sequencer)
-  * Images (music sheets)
-  * Video (sequencer animations)
+## Installing
 
-### Use Cases
+For the Jam It! web app, navigate to the `app/` directory and run:
 
-#### User:
-  * Login: the user must choose a username/nickname and can set a profile picture
-  * Create a lobby: the user can create a lobby and define several settings for it
-  * Join a lobby: the user can join a lobby that hasn't started yet
-  * Write song section: during their turn, the user can add notes on the sequencer
-  * Preview song: during their turn, the user can listen to the song up until the end of their section 
-  * Pass turn: during their turn, the user can pass their turn
-  * Listen to jam: when the jam is over, the user can listen to the whole song
-  * Export jam: when the jam is over, the user can export the final song to several music notation and audio formats
+```bash
+npm install
+```
 
-#### Lobby Leader:
+For the Jam It! API/Server, navigate to the `api/` directory and run:
+```bash
+npm install
+```
 
-  * Change lobby settings: the Lobby leader can change the settings of a lobby that hasn't started yet
-  * Start jam: the Lobby Leader can start the jam anytime they want 
+## Running
 
-### Block diagram
+For the Jam It! web app, navigate to the `app/` directory and run:
 
-![Block diagram (1)](https://user-images.githubusercontent.com/61831138/112857016-53d05600-90a8-11eb-91ad-a6a364393e04.jpg)
+```bash
+npm start
+```
 
-link para editar: [miro](https://miro.com/welcomeonboard/HLPSUFIjvCDol7kjUmAXiGEZJMSPVxuoaoUiQS3YoGbMLmTNmZaKHI4uKwBt4jZI)
-
-### Mock-up
-
-link para editar: [framer](https://framer.com/projects/Sequencer-App--xDJsuuMErWVXJM9c9W7d-cI87y?node=fz05UI8fr-page)
-
-### How to install and use
-
-### Technologies
-
-* [React](https://reactjs.org/): JavaScript library for building web applications
-* [Node.js](https://nodejs.org/): Javascript runtime
-* [Tonejs](https://tonejs.github.io/): Web Audio framework for creating interactive music in the browser
+For the Jam It! API/Server, navigate to the `api/` directory and run:
+```bash
+npm start
